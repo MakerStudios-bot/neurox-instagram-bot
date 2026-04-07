@@ -3,7 +3,7 @@ import json
 import hmac
 import hashlib
 import requests
-from flask import Flask, request
+from flask import Flask, request, Response
 from ai_handler import get_ai_response
 from responses import get_fixed_response
 
@@ -118,6 +118,29 @@ def send_message(recipient_id, message_text):
         print(f"Error enviando mensaje: {response.text}")
     else:
         print(f"Mensaje enviado a {recipient_id}")
+
+
+@app.route("/privacy", methods=["GET"])
+def privacy():
+    """Privacy Policy page"""
+    html = """<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Politica de Privacidad - Neurox</title></head>
+<body>
+<h1>Politica de Privacidad - Neurox</h1>
+<p>Esta aplicacion (bot de Instagram) de Neurox recopila y procesa mensajes directos de Instagram
+con el fin de responder consultas de usuarios mediante inteligencia artificial.</p>
+<h2>Datos recopilados</h2>
+<p>Se procesan unicamente los mensajes de texto enviados al perfil de Instagram @neurox.cl.
+No se almacenan datos personales de forma permanente.</p>
+<h2>Uso de datos</h2>
+<p>Los mensajes se utilizan exclusivamente para generar respuestas automaticas. No se comparten
+con terceros.</p>
+<h2>Contacto</h2>
+<p>Para consultas sobre privacidad: contacto@neurox.cl</p>
+</body>
+</html>"""
+    return Response(html, mimetype='text/html')
 
 
 @app.route("/", methods=["GET"])
