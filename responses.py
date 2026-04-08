@@ -1,13 +1,15 @@
-"""Respuestas fijas VENDEDORAS para Neurox - Diseñadas para cerrar ventas"""
+"""Respuestas fijas simples y amigables para Neurox"""
 
 FIXED_RESPONSES = {
-    # Saludos - Simples y naturales
-    "hola": "¡Hola! 👋 ¿Qué necesitas?",
-    "buenos días": "¡Buenos días! 😊 ¿Cómo estás?",
-    "buenas tardes": "¡Buenas tardes! ¿En qué te ayudo?",
-    "buenas noches": "¡Buenas noches! ¿Todo bien?",
-    "hi": "Hey! 👋 How can I help?",
-    "hii": "Hey! 😊 What's up?",
+    # Saludos - Solo saludar, sin preguntar nada
+    "hola": "¡Hola! 👋",
+    "buenos días": "¡Buenos días! 😊",
+    "buenas tardes": "¡Buenas tardes!",
+    "buenas noches": "¡Buenas noches!",
+    "hi": "Hey! 👋",
+    "hii": "Hey! 😊",
+    "onda": "¿Qué necesitas?",
+    "como estás": "Bien, gracias. ¿En qué te ayudo?",
 
     # BOT INSTAGRAM - ENFOQUE EN VENTA
     "bot": "🤖 ESTO es lo que necesitas: Bot IA que responde DMs 24/7 en < 3 segundos. Resultado: 9x más conversiones. Inversión: $230k único. ¿Cuántos DMs pierdes cada día?",
