@@ -1,15 +1,13 @@
 """Respuestas fijas simples y amigables para Neurox"""
 
 FIXED_RESPONSES = {
-    # Saludos - Solo saludar, sin preguntar nada
-    "hola": "¡Hola! 👋",
-    "buenos días": "¡Buenos días! 😊",
-    "buenas tardes": "¡Buenas tardes!",
-    "buenas noches": "¡Buenas noches!",
-    "hi": "Hey! 👋",
-    "hii": "Hey! 😊",
-    "onda": "¿Qué necesitas?",
-    "como estás": "Bien, gracias. ¿En qué te ayudo?",
+    # Saludos - Presentarse una sola vez
+    "hola": "¡Hola! Soy el bot de Neurox. ¿Cómo estás?",
+    "buenos días": "¡Buenos días! Soy Neurox. ¿Cómo va?",
+    "buenas tardes": "¡Buenas tardes! Soy el bot de Neurox. ¿Qué tal?",
+    "buenas noches": "¡Buenas noches! Neurox aquí. ¿Cómo estás?",
+    "hi": "Hey! I'm Neurox bot. How are you?",
+    "hii": "Hey! Neurox here. What's up?",
 
     # BOT INSTAGRAM - ENFOQUE EN VENTA
     "bot": "🤖 ESTO es lo que necesitas: Bot IA que responde DMs 24/7 en < 3 segundos. Resultado: 9x más conversiones. Inversión: $230k único. ¿Cuántos DMs pierdes cada día?",
