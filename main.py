@@ -6,6 +6,7 @@ import requests
 from flask import Flask, request, Response
 from ai_handler import get_ai_response
 from responses import get_fixed_response
+from informe_flow import detect_informe_intent, process_informe_message
 
 app = Flask(__name__)
 
@@ -84,12 +85,16 @@ def handle_message(req):
             message_text = msg.get("message", {}).get("text")
 
             if sender_id and message_text:
-                # Buscar respuesta fija primero
-                response_text = get_fixed_response(message_text)
+                # Verificar si es intención de informe
+                if detect_informe_intent(message_text):
+                    response_text = process_informe_message(sender_id, message_text)
+                else:
+                    # Buscar respuesta fija primero
+                    response_text = get_fixed_response(message_text)
 
-                # Si no hay respuesta fija, usar IA con historial
-                if response_text is None:
-                    response_text = get_ai_response(sender_id, message_text)
+                    # Si no hay respuesta fija, usar IA con historial
+                    if response_text is None:
+                        response_text = get_ai_response(sender_id, message_text)
 
                 # Enviar respuesta
                 send_message(sender_id, response_text)
@@ -118,6 +123,31 @@ def send_message(recipient_id, message_text):
         print(f"Error enviando mensaje: {response.text}")
     else:
         print(f"Mensaje enviado a {recipient_id}")
+
+
+@app.route("/notify-pdf", methods=["POST"])
+def notify_pdf():
+    """Notificación de Informes IA cuando un PDF está listo"""
+    try:
+        data = request.get_json()
+        instagram_sender_id = data.get("instagram_sender_id")
+        pdf_url = data.get("pdf_url")
+        objetivo = data.get("objetivo", "tu informe")
+
+        if instagram_sender_id and pdf_url:
+            message_text = f"""📊 ¡Tu informe está listo!
+
+Descárgalo aquí: {pdf_url}
+
+También te lo enviamos por email. Si tienes dudas, consulta con nuestro equipo."""
+            send_message(instagram_sender_id, message_text)
+            print(f"✅ Notificación enviada a {instagram_sender_id}")
+            return {"status": "ok"}, 200
+        else:
+            return {"error": "Faltan datos"}, 400
+    except Exception as e:
+        print(f"Error en notify_pdf: {e}")
+        return {"error": str(e)}, 500
 
 
 @app.route("/privacy", methods=["GET"])
