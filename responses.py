@@ -6,8 +6,6 @@ FIXED_RESPONSES = {
     "buenos días": "¡Buenos días! Soy Neurox. Si tienes negocio, te ayudo a vender más. ¿Cómo va?",
     "buenas tardes": "¡Buenas tardes! Soy el bot de Neurox. ¿Cuál es tu negocio?",
     "buenas noches": "¡Buenas noches! Neurox aquí. ¿Qué necesitas para vender más?",
-    "hi": "Hey! I'm Neurox bot. Do you have a business?",
-    "hii": "Hey! Neurox here. Let's grow your business. What's up?",
     "holis": "¡Hola! Neurox. Si tienes negocio en Insta, tengo la solución. ¿Cuál es?",
     "hey": "¡Hey! Neurox. Cuéntame de tu negocio, quizá pueda ayudarte.",
     "qué tal": "¡Bien! Dime, ¿Tienes negocio? Si es así, tengo lo que necesitas.",
@@ -94,7 +92,6 @@ FIXED_RESPONSES = {
 
     # Agradecimiento - Seguimiento
     "gracias": "¡Perfecto! 😊 Ahora responde: ¿Cuál es tu negocio? Te doy presupuesto exacto.",
-    "thanks": "Great! 😊 Tell me about your business. I'll give you an exact quote.",
     "muchas gracias": "¡Para eso estamos! 😊 ¿Cuándo encendemos el bot?",
 
     # Preguntas de interés / Intención
