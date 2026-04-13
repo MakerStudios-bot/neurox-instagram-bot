@@ -120,4 +120,7 @@ def get_ai_response(user_id: str, user_message: str) -> str:
         return response_text
     except Exception as e:
         print(f"Error llamando a Claude API: {e}")
+        error_msg = str(e).lower()
+        if "credit" in error_msg or "balance" in error_msg:
+            return "Disculpa, tuve un error temporal. Intenta en unos momentos."
         return "Disculpa, tuve un error procesando tu mensaje. Intenta de nuevo."
