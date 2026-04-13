@@ -67,7 +67,7 @@ EJEMPLOS Y DEMOSTRACIONES:
   "Entra a https://neurox.agency/ ahí puedes ver el bot funcionando en vivo. Es el ejemplo real de lo que hace."
 
 DATOS:
-- Email: @neurox.ia
+- Email: neurox.contacto@gmail.com
 - Web: neurox.agency
 - Ubicación: Santiago, Chile
 - Frase: "Tu Instagram responde solo, 24/7"
