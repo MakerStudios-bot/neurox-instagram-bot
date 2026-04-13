@@ -2,12 +2,15 @@
 
 FIXED_RESPONSES = {
     # Saludos - Presentarse una sola vez
-    "hola": "¡Hola! Soy el bot de Neurox. ¿Cómo estás?",
-    "buenos días": "¡Buenos días! Soy Neurox. ¿Cómo va?",
-    "buenas tardes": "¡Buenas tardes! Soy el bot de Neurox. ¿Qué tal?",
-    "buenas noches": "¡Buenas noches! Neurox aquí. ¿Cómo estás?",
-    "hi": "Hey! I'm Neurox bot. How are you?",
-    "hii": "Hey! Neurox here. What's up?",
+    "hola": "¡Hola! Soy el bot de Neurox. ¿Tienes negocio en Instagram?",
+    "buenos días": "¡Buenos días! Soy Neurox. Si tienes negocio, te ayudo a vender más. ¿Cómo va?",
+    "buenas tardes": "¡Buenas tardes! Soy el bot de Neurox. ¿Cuál es tu negocio?",
+    "buenas noches": "¡Buenas noches! Neurox aquí. ¿Qué necesitas para vender más?",
+    "hi": "Hey! I'm Neurox bot. Do you have a business?",
+    "hii": "Hey! Neurox here. Let's grow your business. What's up?",
+    "holis": "¡Hola! Neurox. Si tienes negocio en Insta, tengo la solución. ¿Cuál es?",
+    "hey": "¡Hey! Neurox. Cuéntame de tu negocio, quizá pueda ayudarte.",
+    "qué tal": "¡Bien! Dime, ¿Tienes negocio? Si es así, tengo lo que necesitas.",
 
     # BOT INSTAGRAM - ENFOQUE EN VENTA
     "bot": "🤖 ESTO es lo que necesitas: Bot IA que responde DMs 24/7 en < 3 segundos. Resultado: 9x más conversiones. Inversión: $230k único. ¿Cuántos DMs pierdes cada día?",
@@ -30,6 +33,14 @@ FIXED_RESPONSES = {
     "ai": "🧠 Claude IA (la mejor IA del mercado) entrena el bot con tu info. Responde COMO TÚ. Tus precios, tus términos, tu estilo. $230k.",
     "inteligencia": "🧠 No es respuesta automática genérica. Es IA que aprende tu negocio. Vende como tú venderías. 24/7.",
     "automatización": "⚡ Automático = dinero sin tu intervención. El bot cierra el 70% de ventas solo. Tú cierras las difíciles. ROI garantizado.",
+    "cómo funciona": "🤖 Instalamos el bot, le enseñamos tus precios y servicios, ¡y listo! Responde DMs 24/7 vendiendo como tú. Instalación en 48 horas.",
+    "como funciona": "🤖 Instalamos el bot, le enseñamos tus precios y servicios, ¡y listo! Responde DMs 24/7 vendiendo como tú. Instalación en 48 horas.",
+    "qué es": "🤖 Es tu vendedor 24/7. Responde cada DM en < 3 segundos. Cualifica clientes, da presupuesto, cierra ventas. Mientras duermes.",
+    "que es": "🤖 Es tu vendedor 24/7. Responde cada DM en < 3 segundos. Cualifica clientes, da presupuesto, cierra ventas. Mientras duermes.",
+    "quién eres": "🤖 Soy el bot de Neurox. Te ayudo a vender más en Instagram. ¿Cuál es tu negocio?",
+    "quien eres": "🤖 Soy el bot de Neurox. Te ayudo a vender más en Instagram. ¿Cuál es tu negocio?",
+    "qué haces": "💼 Vendo soluciones digitales: Bot IA (cierra ventas), Web (credibilidad), Videos (tráfico). ¿Cuál necesitas?",
+    "que haces": "💼 Vendo soluciones digitales: Bot IA (cierra ventas), Web (credibilidad), Videos (tráfico). ¿Cuál necesitas?",
 
     # Web
     "web": "🌐 Si no tienes web, pierdes credibilidad (y dinero). Landing $180k para empezar. O Web Completa $350k = máximo profesionalismo.",
@@ -85,6 +96,18 @@ FIXED_RESPONSES = {
     "gracias": "¡Perfecto! 😊 Ahora responde: ¿Cuál es tu negocio? Te doy presupuesto exacto.",
     "thanks": "Great! 😊 Tell me about your business. I'll give you an exact quote.",
     "muchas gracias": "¡Para eso estamos! 😊 ¿Cuándo encendemos el bot?",
+
+    # Preguntas de interés / Intención
+    "me interesa": "🔥 Perfecto. Cuéntame tu negocio y presupuesto. Armo propuesta en 2 horas.",
+    "te escribo": "✅ Aquí estoy. ¿Cuál es tu negocio? ¿Tienes presupuesto para un bot?",
+    "puedo hablar": "📞 Claro. Dime tu número o sigue por aquí. ¿Cuál prefieres?",
+    "te llamo": "📱 Dale. Pasame tu número. O empezamos aquí por WhatsApp.",
+    "quiero saber": "📋 Cuéntame: ¿Qué negocio tienes? ¿Cuántos DMs pierdes al mes?",
+    "necesito": "✅ Para eso estamos. ¿Qué necesitas exactamente?",
+    "info": "ℹ️ Te cuento: Bot IA $230k (cierra ventas), Web $180k (credibilidad), Videos (tráfico). ¿Cuál?",
+    "información": "ℹ️ Te cuento: Bot IA $230k (cierra ventas), Web $180k (credibilidad), Videos (tráfico). ¿Cuál?",
+    "propuesta": "📊 Claro. Primero: ¿Cuánto vales en una venta? Con eso te calculo ROI exacto.",
+    "presupuesto": "💰 Bot IA: $230k. Web: $180k. Videos: $35k cada uno. ¿Cuál es tu presupuesto?",
 
     # Despedida - No aceptes ir
     "bye": "Espera 👋 Antes de irte, ¿Me dices tu negocio? En 2 min te digo si te funciona el bot.",
