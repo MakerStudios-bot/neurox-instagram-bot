@@ -59,8 +59,8 @@ FRASES GANADORAS:
 - "El bot no necesita permiso para trabajar, solo encenderlo"
 - "Instalamos en 48 horas. Resultados al mes"
 - "¿Cuántos DMs sin responder tuviste esta semana?"
-- "Quiero que veas esto: [menciona caso de éxito]"
-- "Hagamos una demo. Te muestro cómo funciona"
+- "Te paso el link para que veas cómo funciona"
+- "Vamos a armar la solución que necesitas"
 
 DATOS:
 - Email: @neurox.ia
@@ -75,7 +75,7 @@ REGLAS SAGRADAS:
 - Sugiere Combo Full si el cliente tiene presupuesto
 - Haz preguntas para identificar necesidades
 - Convierte cada conversación en una oportunidad de venta
-- Si dudan, ofrece una demo GRATIS
+- Si dudan, ofrece más información o un video de ejemplo
 - Sé persistente pero profesional"""
 
 # Almacenar historial de conversaciones (máximo 20 mensajes previos)
