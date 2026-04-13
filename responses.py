@@ -121,15 +121,19 @@ def get_fixed_response(message: str) -> str or None:
     Busca una respuesta fija para el mensaje.
     Retorna la respuesta si encuentra una coincidencia, None si no.
     """
+    import re
     message_lower = message.lower().strip()
 
     # Búsqueda exacta primero
     if message_lower in FIXED_RESPONSES:
         return FIXED_RESPONSES[message_lower]
 
-    # Búsqueda parcial (si el mensaje contiene la palabra clave)
+    # Búsqueda de palabras completas (para evitar falsos positivos)
+    # Solo para palabras de 4+ caracteres para evitar matches accidentales con "hi", "ai", etc
     for keyword, response in FIXED_RESPONSES.items():
-        if keyword in message_lower:
-            return response
+        if len(keyword) >= 4:  # Solo palabras lo suficientemente largas
+            # Buscar como palabra completa (con límites de palabra)
+            if re.search(r'\b' + re.escape(keyword) + r'\b', message_lower):
+                return response
 
     return None
