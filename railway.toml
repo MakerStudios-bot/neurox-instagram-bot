@@ -3,7 +3,7 @@ builder = "nixpacks"
 buildCommand = "cd vendedor && pip install -r requirements.txt"
 
 [deploy]
-startCommand = "cd vendedor && gunicorn app:app --bind 0.0.0.0:$PORT --workers 1 --timeout 120"
+startCommand = "cd vendedor && python app.py"
 healthcheckPath = "/health"
 healthcheckTimeout = 10
 restartPolicyMaxRetries = 5
