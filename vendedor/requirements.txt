@@ -5,3 +5,4 @@ anthropic==0.45.1
 python-dotenv==1.0.1
 requests==2.31.0
 gunicorn==21.2.0
+urllib3<2
