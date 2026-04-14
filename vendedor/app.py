@@ -1,7 +1,8 @@
 """Entry point del sistema Vendedor IA — Flask + APScheduler"""
 
 import atexit
-from flask import Flask
+import os
+from flask import Flask, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from database import init_db
 from webhooks.instagram import webhook
@@ -36,6 +37,17 @@ app.register_blueprint(dashboard)
 @app.route("/health", methods=["GET"])
 def health():
     return {"status": "Vendedor IA running"}, 200
+
+
+@app.route("/debug", methods=["GET", "POST"])
+def debug():
+    """Endpoint de debug para verificar que la app está corriendo"""
+    return {
+        "status": "OK",
+        "method": request.method,
+        "path": request.path,
+        "verify_token": os.getenv("VERIFY_TOKEN", "not set")
+    }, 200
 
 
 # ==================
