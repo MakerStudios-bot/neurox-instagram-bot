@@ -71,13 +71,11 @@ def get_ai_response(lead: Lead, user_message: str, db) -> str:
 
     # 7. Extraer [SIGNAL: ...] de la respuesta si existe
     # Buscar la última línea que empiece con [SIGNAL:
+    import re
     signal = None
-    lines = ai_response_full.split("\n")
-    for line in reversed(lines):
-        line_stripped = line.strip()
-        if line_stripped.startswith("[SIGNAL:"):
-            signal = line_stripped
-            break
+    match = re.search(r'\[SIGNAL:\s*(\w+)\s*\]', ai_response_full)
+    if match:
+        signal = match.group(1).upper()  # Extraer solo la palabra clave
 
     # 8. Limpiar la respuesta (remover [SIGNAL: ...] si existe)
     ai_response_clean = ai_response_full
