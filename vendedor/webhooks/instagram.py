@@ -92,14 +92,24 @@ def webhook_handle():
                 print(f"\n📨 DM recibido: {sender_id} → {page_id}")
                 print(f"   Texto: {message_text[:50]}...")
 
-                # 4. Buscar el cliente por page_id
+                # 4. Buscar el cliente por page_id (o crear si no existe)
                 db = SessionLocal()
                 client = db.query(Client).filter(Client.page_id == page_id).first()
 
                 if not client:
-                    print(f"⚠️  Cliente con page_id {page_id} no encontrado")
-                    db.close()
-                    continue
+                    print(f"⚠️  Cliente no encontrado, creando automáticamente...")
+                    # Crear cliente automáticamente
+                    from config import ACCESS_TOKEN as DEFAULT_ACCESS_TOKEN
+                    client = Client(
+                        page_id=page_id,
+                        access_token=DEFAULT_ACCESS_TOKEN or "",
+                        business_name="Neurox",
+                        system_prompt="Eres vendedor. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.",
+                        cal_link="https://calendly.com"
+                    )
+                    db.add(client)
+                    db.flush()
+                    print(f"✓ Cliente creado automáticamente: {client.id}")
 
                 # 5. Buscar o crear el lead
                 lead = db.query(Lead).filter(
