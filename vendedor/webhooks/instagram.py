@@ -47,11 +47,15 @@ def webhook_verify():
     token = request.args.get("hub.verify_token")
     challenge = request.args.get("hub.challenge")
 
+    print(f"🔍 Webhook verification request:")
+    print(f"   mode={mode}, token={token}, challenge={challenge}")
+    print(f"   Expected VERIFY_TOKEN: {VERIFY_TOKEN}")
+
     if mode == "subscribe" and token == VERIFY_TOKEN:
         print("✅ Webhook verificado con Meta")
         return challenge, 200
     else:
-        print("❌ Webhook verification fallido")
+        print(f"❌ Webhook verification fallido. Token mismatch: '{token}' != '{VERIFY_TOKEN}'")
         return "Forbidden", 403
 
 
