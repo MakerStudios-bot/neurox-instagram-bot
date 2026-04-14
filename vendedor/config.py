@@ -8,6 +8,7 @@ load_dotenv()
 # Meta Instagram API
 VERIFY_TOKEN = os.getenv("VERIFY_TOKEN", "test_verify_token")
 APP_SECRET = os.getenv("APP_SECRET", "test_secret")
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN", "")
 
 # Anthropic
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY", "")
