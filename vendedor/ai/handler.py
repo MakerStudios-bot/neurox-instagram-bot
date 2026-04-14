@@ -70,21 +70,16 @@ def get_ai_response(lead: Lead, user_message: str, db) -> str:
     db.flush()
 
     # 7. Extraer [SIGNAL: ...] de la respuesta si existe
-    # Buscar la última línea que empiece con [SIGNAL:
     import re
     signal = None
     match = re.search(r'\[SIGNAL:\s*(\w+)\s*\]', ai_response_full)
     if match:
         signal = match.group(1).upper()  # Extraer solo la palabra clave
 
-    # 8. Limpiar la respuesta (remover [SIGNAL: ...] si existe)
-    ai_response_clean = ai_response_full
-    if signal:
-        ai_response_clean = ai_response_full.replace(signal, "").strip()
+    # 8. Limpiar la respuesta (remover TODO [SIGNAL: ...] incluyendo los corchetes)
+    ai_response_clean = re.sub(r'\[SIGNAL:\s*\w+\s*\]', '', ai_response_full).strip()
 
-    # 9. Devolver la respuesta limpia (el signal se extrae en el webhook)
-    # Agregamos el signal de vuelta para que el webhook pueda parsearlo
-    # pero lo hacemos de forma que pueda extraerlo
+    # 9. Devolver la respuesta limpia (sin el tag [SIGNAL: ...])
     return {
         "response": ai_response_clean,
         "signal": signal
