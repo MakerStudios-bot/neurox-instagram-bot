@@ -1,6 +1,43 @@
-# Bot de Instagram con IA + Respuestas Fijas
+# Neurox — Bot de Instagram + Vendedor IA
 
-Bot automático que responde DMs de Instagram usando Claude IA y respuestas predefinidas.
+Bot automático que responde DMs de Instagram usando Claude IA, con sistema de pipeline de ventas completamente automatizado.
+
+## 🚀 Deploy Vendedor IA a Railway (1 Click)
+
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/new?templateUrl=https://github.com/MakerStudios-bot/neurox-instagram-bot)
+
+**Pasos:**
+1. Haz click en el botón ☝️
+2. Autoriza en Railway
+3. Completa las variables de entorno (VERIFY_TOKEN, APP_SECRET, ANTHROPIC_API_KEY, etc.)
+4. ¡Listo! Deploy automático ✅
+
+**Luego:** Conecta a Meta for Developers (ver sección "Configurar Webhook en Meta" abajo)
+
+---
+
+## 📋 Dos Sistemas en Este Repo
+
+### 1. **Bot Simple** (main.py)
+- Respuestas fijas predefinidas
+- IA para conversaciones
+- Histórico en memoria
+- ✅ Rápido de deployar
+
+### 2. **Vendedor IA** (vendedor/) - ⭐ RECOMENDADO
+- **State machine** automático: NUEVO → CALIFICANDO → AGENDADO → COTIZADO → FOLLOW_UP → CERRADO
+- **IA adaptativa** con prompts dinámicos por etapa
+- **Multi-tenant**: Múltiples clientes aislados
+- **Follow-up automático**: Job cada 24h
+- **Dashboard admin**: Ver leads + historial + cierre manual
+- **Base de datos**: Persistencia completa en SQLite
+- ✅ Sistema de ventas profesional end-to-end
+
+**Recomendamos usar Vendedor IA** (en carpeta `vendedor/`). [Ver documentación completa](./vendedor/README.md)
+
+---
+
+## 📖 Documentación
 
 ## Características
 
