@@ -59,7 +59,7 @@ def webhook_verify():
 def webhook_handle():
     """Recibe DMs de Instagram y orquesta el pipeline completo"""
     try:
-        # 1. Validar firma de Meta (comentado para pruebas locales)
+        # 1. Validar firma de Meta (desactivado temporalmente)
         # if not verify_hmac_signature(request):
         #     print("❌ Firma HMAC inválida, rechazando")
         #     return "Forbidden", 403
