@@ -1,5 +1,6 @@
 """Orquestador principal de IA — maneja el flujo de conversación"""
 
+import re
 from database.models import Lead, Message
 from database import SessionLocal
 from .claude_client import call_claude
@@ -126,10 +127,10 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
     if "nombre" not in lead.context or not lead.context.get("nombre"):
         # Buscar "me llamo...", "mi nombre es...", "soy..."
         patterns = [
-            r"me\s+llamo\s+([a-záéíóúñ]+)",
-            r"mi\s+nombre\s+es\s+([a-záéíóúñ]+)",
-            r"soy\s+([a-záéíóúñ]+)",
-            r"nombre:\s*([a-záéíóúñ]+)",
+            r"me\s+llamo\s+(\w+)",
+            r"mi\s+nombre\s+es\s+(\w+)",
+            r"soy\s+(\w+)",
+            r"nombre:\s*(\w+)",
         ]
         for pattern in patterns:
             match = re.search(pattern, full_text)
