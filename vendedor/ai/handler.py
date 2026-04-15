@@ -72,7 +72,6 @@ def get_ai_response(lead: Lead, user_message: str, db) -> str:
     db.flush()
 
     # 7. Extraer [SIGNAL: ...] de la respuesta si existe
-    import re
     signal = None
     match = re.search(r'\[SIGNAL:\s*(\w+)\s*\]', ai_response_full)
     if match:
@@ -113,31 +112,52 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
     # Palabras clave para detectar servicios (más específico primero)
     servicios_keywords = [
         # Web - buscar versiones específicas primero
-        (["web completa", "sitio web completo"], "web_completa"),
+        (["web completa", "sitio web completo", "página completa", "web profesional completa"], "web_completa"),
         (["landing page", "landing"], "landing_page"),
-        (["página web", "web", "sitio web", "desarrollo web"], "web"),
+        (["página web", "pagina web", "sitio web", "desarrollo web", "web"], "web"),
 
-        # Bot
-        (["bot con ia", "bot ia", "chatbot ia", "bot inteligente"], "bot_con_ia"),
-        (["bot sin ia", "bot basico"], "bot_sin_ia"),
-        (["bot instagram", "bot", "automatización instagram", "chatbot"], "bot"),
+        # Bot con IA - keywords ampliados
+        (["bot con ia", "bot ia", "chatbot ia", "bot inteligente",
+          "bot con inteligencia", "bot de inteligencia artificial",
+          "bot inteligencia artificial", "chatbot inteligente",
+          "bot automatico con ia", "bot con inteligencia artificial"], "bot_con_ia"),
+
+        # Bot sin IA
+        (["bot sin ia", "bot basico", "bot sin inteligencia", "bot simple"], "bot_sin_ia"),
+
+        # Bot genérico
+        (["bot instagram", "bot automatico", "automatización instagram",
+          "chatbot", "bot"], "bot"),
 
         # Video
-        (["edición de videos", "editar videos", "edición video", "videos"], "video"),
+        (["edición de videos", "editar videos", "edición video",
+          "edicion de videos", "editar video", "videos", "video"], "video"),
 
         # Vendedor IA
-        (["vendedor ia", "sistema de ventas", "automatización ventas", "vendedor automatizado"], "vendedor_ia"),
+        (["vendedor ia", "vendedor inteligente", "sistema de ventas",
+          "automatización ventas", "automatizacion ventas",
+          "vendedor automatizado", "sistema ventas"], "vendedor_ia"),
     ]
 
-    # Detectar servicio (actualizar si detecta uno nuevo en el mensaje actual)
-    # Priorizar buscar en el mensaje del usuario más reciente para cambios
+    # Jerarquía de especificidad — no sobreescribir un servicio específico con uno genérico
+    SERVICE_SPECIFICITY = {
+        "web_completa": 3, "landing_page": 3,
+        "bot_con_ia": 3, "bot_sin_ia": 3, "vendedor_ia": 3,
+        "web": 2, "bot": 2, "video": 2,
+    }
+
+    # Detectar servicio en el mensaje del usuario
     for palabras, servicio in servicios_keywords:
         if any(palabra in user_message.lower() for palabra in palabras):
-            # Si detecta un servicio en el mensaje actual, actualiza
-            if lead.context.get("servicio_interesado") != servicio:
-                # Reemplazar completamente el diccionario para que SQLAlchemy lo detecte
+            current = lead.context.get("servicio_interesado", "")
+            # Solo actualizar si es igual o más específico que el actual
+            current_level = SERVICE_SPECIFICITY.get(current, 0)
+            new_level = SERVICE_SPECIFICITY.get(servicio, 0)
+            if new_level >= current_level:
                 lead.context = {**lead.context, "servicio_interesado": servicio}
-                print(f"  ✓ Servicio detectado: {servicio}")
+                print(f"  ✓ Servicio detectado: {servicio} (nivel {new_level} >= {current_level})")
+            else:
+                print(f"  ⚠ Servicio '{servicio}' ignorado (nivel {new_level} < {current_level} '{current}')")
             break
 
     # Detectar nombre (buscar patrones comunes: "me llamo X", "soy X", "nombre X", "Juan", etc.)

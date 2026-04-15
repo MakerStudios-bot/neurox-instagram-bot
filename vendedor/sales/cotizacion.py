@@ -21,6 +21,24 @@ def generar_cotizacion(lead, db):
     servicio = context.get("servicio_interesado", "Servicio")
     presupuesto = context.get("presupuesto", "No especificado")
 
+    # Mapa de nombres internos → nombres legibles para mostrar en la cotización
+    SERVICE_DISPLAY_NAMES = {
+        "web_completa": "Web Completa",
+        "landing_page": "Landing Page",
+        "web": "Página Web",
+        "bot_con_ia": "Bot Automático Instagram (Con IA)",
+        "bot_sin_ia": "Bot Automático Instagram (Sin IA)",
+        "bot": "Bot Automático Instagram",
+        "bot instagram": "Bot Automático Instagram",
+        "bot ia": "Bot Automático Instagram (Con IA)",
+        "video": "Edición de Videos para Redes",
+        "videos": "Edición de Videos para Redes",
+        "vendedor_ia": "Vendedor IA",
+        "vendedor ia": "Vendedor IA",
+        "sistema ventas": "Sistema de Ventas Automatizado",
+    }
+    servicio_display = SERVICE_DISPLAY_NAMES.get(servicio.lower(), servicio)
+
     # DEBUG: mostrar el contexto completo
     print(f"\n=== GENERAR COTIZACIÓN ===")
     print(f"Lead ID: {lead.id}")
@@ -175,7 +193,7 @@ def generar_cotizacion(lead, db):
     # Crear registro en BD
     cotizacion = Cotizacion(
         lead_id=lead.id,
-        servicio=servicio,
+        servicio=servicio_display,  # Nombre legible en lugar de key interno
         presupuesto_cliente=presupuesto,
         items=coti_data.get("items", []),
         total=coti_data.get("total", "A consultar"),
@@ -187,7 +205,7 @@ def generar_cotizacion(lead, db):
 
     # Retornar URL completa
     url = f"{APP_URL}/cotizacion/{cotizacion.token}"
-    print(f"✓ Cotización generada para '{nombre_cliente}' - Servicio: {servicio}")
+    print(f"✓ Cotización generada para '{nombre_cliente}' - Servicio: {servicio_display}")
     print(f"  Items: {len(coti_data.get('items', []))} | Total: {coti_data.get('total', 'A consultar')}")
     print(f"  URL: {url}")
     return url

@@ -83,11 +83,12 @@ def webhook_handle():
             return "OK", 200
 
         for msg in messaging:
+            db = None  # Inicializar a None para evitar UnboundLocalError en finally
             try:
                 sender_id = msg.get("sender", {}).get("id")
                 message_text = msg.get("message", {}).get("text")
 
-                # Ignore si falta info
+                # Ignore si falta info (reacciones, stickers, media sin texto, etc.)
                 if not sender_id or not message_text:
                     continue
 
@@ -189,10 +190,12 @@ def webhook_handle():
 
             except Exception as e:
                 print(f"❌ Error procesando mensaje: {e}")
-                db.rollback()
+                if db is not None:
+                    db.rollback()
                 continue
             finally:
-                db.close()
+                if db is not None:
+                    db.close()
 
         return "OK", 200
 
