@@ -6,7 +6,7 @@ from flask import Flask, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from database import init_db
 from webhooks.instagram import webhook
-from dashboard.routes import dashboard
+from dashboard.routes import dashboard, public_bp
 from scheduler.follow_up import run_follow_up_job
 from config import PORT, FOLLOW_UP_JOB_INTERVAL
 import os
@@ -29,6 +29,7 @@ print("✓ Base de datos lista")
 # ==================
 app.register_blueprint(webhook)
 app.register_blueprint(dashboard)
+app.register_blueprint(public_bp)
 
 
 # ==================

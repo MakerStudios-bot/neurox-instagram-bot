@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, Text, DateTime, JSON, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from . import Base
+import uuid
 
 
 class Client(Base):
@@ -59,3 +60,31 @@ class Message(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     lead = relationship("Lead", back_populates="messages")
+
+
+class Cotizacion(Base):
+    """Cotización generada para un lead con link público"""
+    __tablename__ = "cotizaciones"
+
+    id = Column(Integer, primary_key=True)
+    lead_id = Column(Integer, ForeignKey("leads.id"), nullable=False)
+
+    # Token único para URL: /cotizacion/{token}
+    token = Column(String, unique=True, nullable=False, index=True, default=lambda: str(uuid.uuid4()))
+
+    # Datos de la cotización
+    servicio = Column(String, nullable=False)  # Nombre del servicio
+    presupuesto_cliente = Column(String, nullable=True)  # Presupuesto que mencionó el cliente
+
+    # JSON: lista de items [{descripcion, precio}, ...]
+    items = Column(JSON, default=[])
+
+    # Total de la cotización (string para mantener formato de precio)
+    total = Column(String, nullable=True)
+
+    # Notas adicionales
+    notas = Column(Text, nullable=True)
+
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    lead = relationship("Lead")

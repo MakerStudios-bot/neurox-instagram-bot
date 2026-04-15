@@ -9,6 +9,7 @@ from database.models import Client, Lead, Message
 from ai.handler import get_ai_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
+from sales.cotizacion import generar_cotizacion
 from config import VERIFY_TOKEN, APP_SECRET
 from datetime import datetime
 
@@ -165,7 +166,24 @@ def webhook_handle():
                     message_text=response_text
                 )
 
-                # 11. Guardar cambios
+                # 11. Si signal es COTIZAR, generar cotización y enviar link
+                if signal == "COTIZAR":
+                    print(f"  Signal COTIZAR detectado, generando cotización...")
+                    try:
+                        coti_url = generar_cotizacion(lead, db)
+                        # Enviar segundo DM con el link
+                        coti_message = f"Aquí está tu cotización personalizada:\n{coti_url}"
+                        send_dm(
+                            page_id=client.page_id,
+                            access_token=client.access_token,
+                            user_id=sender_id,
+                            message_text=coti_message
+                        )
+                        print(f"  ✓ Cotización enviada: {coti_url}")
+                    except Exception as e:
+                        print(f"  ❌ Error generando cotización: {e}")
+
+                # 12. Guardar cambios
                 db.commit()
                 print(f"✓ Pipeline completado para lead {lead.id}")
 

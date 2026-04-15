@@ -1,12 +1,13 @@
-"""Rutas del dashboard admin"""
+"""Rutas del dashboard admin y cotizaciones públicas"""
 
 from flask import Blueprint, render_template, jsonify, request
 from database import SessionLocal
-from database.models import Client, Lead, Message
+from database.models import Client, Lead, Message, Cotizacion
 from .auth import require_basic_auth
 from datetime import datetime
 
 dashboard = Blueprint("dashboard", __name__, url_prefix="/admin")
+public_bp = Blueprint("public", __name__)
 
 
 @dashboard.route("/", methods=["GET"])
@@ -213,6 +214,176 @@ def close_lead():
         </body>
         </html>
         """
+
+    finally:
+        db.close()
+
+
+# ==================
+# Rutas Públicas (sin autenticación)
+# ==================
+
+@public_bp.route("/cotizacion/<token>", methods=["GET"])
+def view_cotizacion(token):
+    """Muestra una cotización pública por token"""
+    db = SessionLocal()
+
+    try:
+        cotizacion = db.query(Cotizacion).filter(Cotizacion.token == token).first()
+
+        if not cotizacion:
+            return "Cotización no encontrada", 404
+
+        lead = cotizacion.lead
+        client = lead.client
+        nombre_cliente = lead.context.get("nombre", "Cliente") if lead.context else "Cliente"
+
+        # Generar tabla de items
+        items_html = ""
+        total_price = cotizacion.total or "A consultar"
+
+        for item in cotizacion.items:
+            desc = item.get("descripcion", "Servicio")
+            price = item.get("precio", "$0.00")
+            items_html += f"""
+            <tr>
+                <td>{desc}</td>
+                <td style="text-align: right;">{price}</td>
+            </tr>
+            """
+
+        html = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Cotización - {client.business_name}</title>
+            <style>
+                body {{
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    margin: 0;
+                    padding: 20px;
+                    background-color: #f5f5f5;
+                }}
+                .container {{
+                    max-width: 600px;
+                    margin: 0 auto;
+                    background: white;
+                    padding: 30px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+                }}
+                .header {{
+                    text-align: center;
+                    border-bottom: 2px solid #0d6efd;
+                    padding-bottom: 20px;
+                    margin-bottom: 20px;
+                }}
+                .header h1 {{
+                    margin: 0;
+                    color: #0d6efd;
+                    font-size: 28px;
+                }}
+                .header p {{
+                    margin: 5px 0;
+                    color: #666;
+                    font-size: 14px;
+                }}
+                .client-info {{
+                    background: #f9f9f9;
+                    padding: 15px;
+                    border-radius: 5px;
+                    margin-bottom: 20px;
+                }}
+                .client-info p {{
+                    margin: 5px 0;
+                    font-size: 14px;
+                }}
+                table {{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                }}
+                th {{
+                    background-color: #0d6efd;
+                    color: white;
+                    padding: 12px;
+                    text-align: left;
+                    font-weight: 600;
+                }}
+                td {{
+                    padding: 12px;
+                    border-bottom: 1px solid #eee;
+                }}
+                .total-row {{
+                    font-size: 18px;
+                    font-weight: bold;
+                    color: #0d6efd;
+                    text-align: right;
+                    padding-top: 20px;
+                    border-top: 2px solid #0d6efd;
+                }}
+                .notas {{
+                    background: #fff3cd;
+                    padding: 15px;
+                    border-radius: 5px;
+                    margin-top: 20px;
+                    font-size: 13px;
+                    color: #856404;
+                    border: 1px solid #ffeaa7;
+                }}
+                .footer {{
+                    text-align: center;
+                    margin-top: 30px;
+                    padding-top: 20px;
+                    border-top: 1px solid #eee;
+                    color: #666;
+                    font-size: 13px;
+                }}
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <div class="header">
+                    <h1>{client.business_name}</h1>
+                    <p>Cotización Profesional</p>
+                </div>
+
+                <div class="client-info">
+                    <p><strong>Para:</strong> {nombre_cliente}</p>
+                    <p><strong>Servicio:</strong> {cotizacion.servicio}</p>
+                    <p><strong>Fecha:</strong> {cotizacion.created_at.strftime("%d/%m/%Y")}</p>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Descripción</th>
+                            <th style="text-align: right;">Precio</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items_html}
+                    </tbody>
+                </table>
+
+                <div class="total-row">
+                    TOTAL: {total_price}
+                </div>
+
+                {"<div class='notas'>" + cotizacion.notas + "</div>" if cotizacion.notas else ""}
+
+                <div class="footer">
+                    <p>Responde al chat de Instagram para confirmar o hacer preguntas sobre esta cotización.</p>
+                    <p style="color: #999; margin-top: 10px;">Generado automáticamente por {client.business_name}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+
+        return html
 
     finally:
         db.close()
