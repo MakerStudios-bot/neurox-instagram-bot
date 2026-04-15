@@ -23,6 +23,15 @@ def generar_cotizacion(lead, db):
 
     # Precios de servicios reales
     servicios_disponibles = {
+        # Web - específico
+        "web_completa": [
+            {"descripcion": "Web Completa", "precio": "$350.000"}
+        ],
+        "landing_page": [
+            {"descripcion": "Landing Page", "precio": "$150.000"}
+        ],
+
+        # Web - genérico (cuando no especifica cuál)
         "página web": [
             {"descripcion": "Landing Page", "precio": "$150.000"},
             {"descripcion": "Web Completa", "precio": "$350.000"}
@@ -34,6 +43,21 @@ def generar_cotizacion(lead, db):
             {"descripcion": "Landing Page", "precio": "$150.000"},
             {"descripcion": "Web Completa", "precio": "$350.000"}
         ],
+        # Bot - específico
+        "bot_con_ia": [
+            {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+        "bot_sin_ia": [
+            {"descripcion": "Bot Automático Instagram (Sin IA)", "precio": "$110.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+
+        # Bot - genérico (cuando no especifica con/sin IA)
         "bot": [
             {"descripcion": "Bot Automático Instagram (Sin IA)", "precio": "$110.000"},
             {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
@@ -47,7 +71,7 @@ def generar_cotizacion(lead, db):
             {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
             {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
             {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
-        ],
+        },
         "bot ia": [
             {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
             {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
@@ -74,6 +98,12 @@ def generar_cotizacion(lead, db):
             {"descripcion": "Por video", "precio": "$35.000"},
             {"descripcion": "4 videos", "precio": "$110.000"},
             {"descripcion": "8 videos", "precio": "$190.000"}
+        ],
+        # Vendedor IA
+        "vendedor_ia": [
+            {"descripcion": "Vendedor IA Starter", "precio": "$230.000 + $55.000/mes"},
+            {"descripcion": "Vendedor IA Pro", "precio": "$380.000 + $105.000/mes"},
+            {"descripcion": "Vendedor IA Elite", "precio": "$580.000 + $160.000/mes"}
         ],
         "vendedor ia": [
             {"descripcion": "Vendedor IA Starter", "precio": "$230.000 + $55.000/mes"},

@@ -106,17 +106,28 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
 
     full_text = (user_message + " " + ai_response).lower()
 
-    # Palabras clave para detectar servicios
-    servicios_keywords = {
-        "página web": ["página web", "web", "landing page", "sitio web"],
-        "bot": ["bot instagram", "bot", "automatización instagram", "chatbot"],
-        "video": ["video", "videos", "edición de video", "edición"],
-        "vendedor ia": ["vendedor ia", "vendedor", "sistema de ventas", "automatización ventas"]
-    }
+    # Palabras clave para detectar servicios (más específico primero)
+    servicios_keywords = [
+        # Web - buscar versiones específicas primero
+        (["web completa", "sitio web completo"], "web_completa"),
+        (["landing page", "landing"], "landing_page"),
+        (["página web", "web", "sitio web", "desarrollo web"], "web"),
+
+        # Bot
+        (["bot con ia", "bot ia", "chatbot ia", "bot inteligente"], "bot_con_ia"),
+        (["bot sin ia", "bot basico"], "bot_sin_ia"),
+        (["bot instagram", "bot", "automatización instagram", "chatbot"], "bot"),
+
+        # Video
+        (["edición de videos", "editar videos", "edición video", "videos"], "video"),
+
+        # Vendedor IA
+        (["vendedor ia", "sistema de ventas", "automatización ventas", "vendedor automatizado"], "vendedor_ia"),
+    ]
 
     # Detectar servicio si aún no está en contexto
     if "servicio_interesado" not in lead.context or not lead.context.get("servicio_interesado"):
-        for servicio, palabras in servicios_keywords.items():
+        for palabras, servicio in servicios_keywords:
             if any(palabra in full_text for palabra in palabras):
                 lead.context["servicio_interesado"] = servicio
                 print(f"  ✓ Servicio detectado: {servicio}")
