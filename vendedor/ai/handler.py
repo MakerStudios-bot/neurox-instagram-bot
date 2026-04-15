@@ -125,13 +125,15 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
         (["vendedor ia", "sistema de ventas", "automatización ventas", "vendedor automatizado"], "vendedor_ia"),
     ]
 
-    # Detectar servicio si aún no está en contexto
-    if "servicio_interesado" not in lead.context or not lead.context.get("servicio_interesado"):
-        for palabras, servicio in servicios_keywords:
-            if any(palabra in full_text for palabra in palabras):
+    # Detectar servicio (actualizar si detecta uno nuevo en el mensaje actual)
+    # Priorizar buscar en el mensaje del usuario más reciente para cambios
+    for palabras, servicio in servicios_keywords:
+        if any(palabra in user_message.lower() for palabra in palabras):
+            # Si detecta un servicio en el mensaje actual, actualiza
+            if lead.context.get("servicio_interesado") != servicio:
                 lead.context["servicio_interesado"] = servicio
                 print(f"  ✓ Servicio detectado: {servicio}")
-                break
+            break
 
     # Detectar nombre (buscar patrones comunes: "me llamo X", "soy X", "nombre X", "Juan", etc.)
     # Por ahora usamos una heurística simple
