@@ -35,9 +35,9 @@ def generar_cotizacion(lead, db):
         "video": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "videos": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "edición": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
-        "vendedor ia": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$380.000", "Vendedor IA Elite": "$580.000"},
-        "sistema ventas": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$380.000", "Vendedor IA Elite": "$580.000"},
-        "automatización": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$380.000", "Vendedor IA Elite": "$580.000"}
+        "vendedor ia": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"},
+        "sistema ventas": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"},
+        "automatización": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"}
     }
 
     # Buscar servicios relevantes
@@ -70,9 +70,9 @@ SERVICIOS DISPONIBLES (usa EXACTAMENTE los nombres y precios):
 - Por video (edición): $35.000
 - 4 videos (paquete): $110.000
 - 8 videos (paquete): $190.000
-- Vendedor IA Starter: $230.000
-- Vendedor IA Pro: $380.000
-- Vendedor IA Elite: $580.000
+- Vendedor IA Starter: $230.000 inicial + $55.000/mes (hasta 500 conversaciones/mes)
+- Vendedor IA Pro: $380.000 inicial + $105.000/mes (hasta 1500 conversaciones/mes)
+- Vendedor IA Elite: $580.000 inicial + $160.000/mes (ilimitado)
 
 Devuelve un JSON válido (SIN explicaciones, SOLO el JSON):
 {{

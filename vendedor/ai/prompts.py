@@ -101,10 +101,10 @@ SERVICIOS DISPONIBLES (solo menciona los que aplican):
    - 4 videos: $110.000
    - 8 videos: $190.000
 
-4. VENDEDOR IA (Sistema de ventas automático):
-   - Starter: $230.000
-   - Pro: $380.000
-   - Elite: $580.000
+4. VENDEDOR IA (Sistema de ventas automático + membresía mensual):
+   - Starter: $230.000 + $55.000/mes (hasta 500 conversaciones)
+   - Pro: $380.000 + $105.000/mes (hasta 1500 conversaciones)
+   - Elite: $580.000 + $160.000/mes (ilimitado)
 
 INSTRUCCIONES:
 - NUNCA inventes servicios que no estén en la lista anterior
