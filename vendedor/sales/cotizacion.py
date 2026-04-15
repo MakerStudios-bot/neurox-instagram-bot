@@ -80,7 +80,7 @@ def generar_cotizacion(lead, db):
             {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
             {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
             {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
-        },
+        ],
         "bot ia": [
             {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
             {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
