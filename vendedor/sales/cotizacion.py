@@ -23,26 +23,72 @@ def generar_cotizacion(lead, db):
     servicio = context.get("servicio_interesado", "Servicio")
     presupuesto = context.get("presupuesto", "No especificado")
 
-    # Prompt para que Claude genere items de cotización en JSON
+    # Precios de servicios reales
+    servicios_disponibles = {
+        "página web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
+        "landing page": {"Landing Page": "$150.000"},
+        "web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
+        "bot": {"Bot Automático Instagram": "$180.000"},
+        "bot instagram": {"Bot Automático Instagram": "$180.000"},
+        "bot ia": {"Bot Automático Instagram (con IA)": "$180.000"},
+        "video": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
+        "videos": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
+        "edición": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
+        "vendedor ia": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$300.000", "Vendedor IA Elite": "$500.000"},
+        "sistema ventas": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$300.000", "Vendedor IA Elite": "$500.000"}
+    }
+
+    # Buscar servicios relevantes
+    items_default = []
+    for palabra_clave, opciones in servicios_disponibles.items():
+        if palabra_clave in servicio.lower():
+            for nombre_servicio, precio in opciones.items():
+                items_default.append({"descripcion": nombre_servicio, "precio": precio})
+            break
+
+    # Si no encontró nada específico, usar un mensaje genérico
+    if not items_default:
+        items_default = [
+            {"descripcion": "Consultoría inicial de servicios", "precio": "Gratis"}
+        ]
+
+    # Prompt para que Claude valide y genere JSON
     prompt_cotizacion = f"""
 Genera una cotización profesional en JSON para un cliente.
 
 Cliente: {nombre_cliente}
-Servicio: {servicio}
+Servicio solicitado: {servicio}
 Presupuesto mencionado: {presupuesto}
 
-Devuelve un JSON válido con esta estructura (SIN explicaciones, SOLO el JSON):
+SERVICIOS DISPONIBLES (usa EXACTAMENTE los nombres y precios):
+- Landing Page: $150.000
+- Web Completa: $350.000
+- Bot Automático Instagram (con IA): $180.000
+- Por video (edición): $35.000
+- 4 videos (paquete): $110.000
+- 8 videos (paquete): $190.000
+- Vendedor IA Starter: $230.000
+- Vendedor IA Pro: $300.000
+- Vendedor IA Elite: $500.000
+
+Devuelve un JSON válido (SIN explicaciones, SOLO el JSON):
 {{
     "items": [
-        {{"descripcion": "Descripción del servicio 1", "precio": "precio en formato $X.XX"}},
-        {{"descripcion": "Descripción del servicio 2", "precio": "precio en formato $X.XX"}}
+        {{"descripcion": "Nombre del servicio exacto", "precio": "Precio exacto"}},
+        {{"descripcion": "Otro servicio si es combo", "precio": "Precio"}}
     ],
-    "total": "Total en formato $X.XX",
-    "notas": "Nota breve sobre validez de cotización o próximos pasos"
+    "total": "Total en formato $X.XXX",
+    "notas": "Nota breve: validez de 30 días, próximos pasos"
 }}
 
-Crea entre 2-4 items que sean relevantes para el servicio y presupuesto mencionado.
-Los precios deben ser razonables pero premium (no descuentos, precio normal de mercado).
+REGLAS IMPORTANTES:
+- Solo usa servicios de la lista "SERVICIOS DISPONIBLES"
+- NUNCA inventes servicios
+- Los precios deben ser exactos, sin cambios
+- Si el cliente pidió "desarrollo web" sugiere Web Completa
+- Si pidió "bot" sugiere Bot Automático Instagram
+- Si pidió "videos" sugiere edición de videos
+- El total debe ser la suma de todos los items
 """
 
     try:
@@ -63,15 +109,22 @@ Los precios deben ser razonables pero premium (no descuentos, precio normal de m
 
     except Exception as e:
         print(f"Error generando cotización con Claude: {e}")
-        # Fallback: cotización genérica
-        coti_data = {
-            "items": [
-                {"descripcion": f"{servicio} - Consultoría", "precio": "$500.00"},
-                {"descripcion": f"{servicio} - Implementación", "precio": "$1,500.00"}
-            ],
-            "total": "$2,000.00",
-            "notas": "Cotización preliminar. Sujeta a confirmación tras revisión detallada."
-        }
+        # Fallback: usar cotización por defecto según servicio detectado
+        if items_default:
+            total = "$0"  # Calcular total real
+            coti_data = {
+                "items": items_default,
+                "total": total,
+                "notas": "Cotización basada en tu solicitud. Válida por 30 días. Responde al chat para confirmar."
+            }
+        else:
+            coti_data = {
+                "items": [
+                    {"descripcion": "Consultoría inicial de servicios Neurox", "precio": "Gratis"}
+                ],
+                "total": "$0",
+                "notas": "Agendar una llamada para personalizar la cotización según tus necesidades."
+            }
 
     # Crear registro en BD
     cotizacion = Cotizacion(
