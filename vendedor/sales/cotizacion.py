@@ -28,14 +28,15 @@ def generar_cotizacion(lead, db):
         "página web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
         "landing page": {"Landing Page": "$150.000"},
         "web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
-        "bot": {"Bot Automático Instagram": "$180.000"},
-        "bot instagram": {"Bot Automático Instagram": "$180.000"},
-        "bot ia": {"Bot Automático Instagram (con IA)": "$180.000"},
+        "bot": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000"},
+        "bot instagram": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000"},
+        "bot ia": {"Bot Automático Instagram (Con IA)": "$180.000"},
+        "bot sin ia": {"Bot Automático Instagram (Sin IA)": "$110.000"},
         "video": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "videos": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "edición": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
-        "vendedor ia": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$300.000", "Vendedor IA Elite": "$500.000"},
-        "sistema ventas": {"Vendedor IA Starter": "$230.000", "Vendedor IA Pro": "$300.000", "Vendedor IA Elite": "$500.000"}
+        "vendedor ia": {"Vendedor IA": "Precios disponibles para consultar"},
+        "sistema ventas": {"Vendedor IA": "Precios disponibles para consultar"}
     }
 
     # Buscar servicios relevantes
@@ -63,13 +64,12 @@ Presupuesto mencionado: {presupuesto}
 SERVICIOS DISPONIBLES (usa EXACTAMENTE los nombres y precios):
 - Landing Page: $150.000
 - Web Completa: $350.000
-- Bot Automático Instagram (con IA): $180.000
+- Bot Automático Instagram (Sin IA): $110.000
+- Bot Automático Instagram (Con IA): $180.000
 - Por video (edición): $35.000
 - 4 videos (paquete): $110.000
 - 8 videos (paquete): $190.000
-- Vendedor IA Starter: $230.000
-- Vendedor IA Pro: $300.000
-- Vendedor IA Elite: $500.000
+- Vendedor IA: Precios disponibles para consultar
 
 Devuelve un JSON válido (SIN explicaciones, SOLO el JSON):
 {{
