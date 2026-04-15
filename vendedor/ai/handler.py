@@ -105,6 +105,9 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
     if not lead.context:
         lead.context = {}
 
+    print(f"\n[CONTEXT] Usuario dice: '{user_message[:100]}'")
+    print(f"[CONTEXT] Contexto antes: {lead.context}")
+
     full_text = (user_message + " " + ai_response).lower()
 
     # Palabras clave para detectar servicios (más específico primero)
@@ -171,5 +174,7 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
                 break
 
     # Marcar que el contexto cambió para que SQLAlchemy lo guarde
+    print(f"[CONTEXT] Contexto después: {lead.context}")
     flag_modified(lead, "context")
     db.flush()
+    print(f"[CONTEXT] Flush completado\n")

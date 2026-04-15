@@ -21,6 +21,15 @@ def generar_cotizacion(lead, db):
     servicio = context.get("servicio_interesado", "Servicio")
     presupuesto = context.get("presupuesto", "No especificado")
 
+    # DEBUG: mostrar el contexto completo
+    print(f"\n=== GENERAR COTIZACIÓN ===")
+    print(f"Lead ID: {lead.id}")
+    print(f"Contexto completo: {context}")
+    print(f"Servicio detectado: '{servicio}'")
+    print(f"Nombre: '{nombre_cliente}'")
+    print(f"Presupuesto: '{presupuesto}'")
+    print(f"=========================\n")
+
     # Precios de servicios reales
     servicios_disponibles = {
         # Web - específico
