@@ -132,7 +132,8 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
         if any(palabra in user_message.lower() for palabra in palabras):
             # Si detecta un servicio en el mensaje actual, actualiza
             if lead.context.get("servicio_interesado") != servicio:
-                lead.context["servicio_interesado"] = servicio
+                # Reemplazar completamente el diccionario para que SQLAlchemy lo detecte
+                lead.context = {**lead.context, "servicio_interesado": servicio}
                 print(f"  ✓ Servicio detectado: {servicio}")
             break
 
@@ -150,7 +151,7 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
             match = re.search(pattern, full_text)
             if match:
                 nombre = match.group(1).capitalize()
-                lead.context["nombre"] = nombre
+                lead.context = {**lead.context, "nombre": nombre}
                 print(f"  ✓ Nombre detectado: {nombre}")
                 break
 
@@ -165,7 +166,7 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
             match = re.search(pattern, full_text)
             if match:
                 presupuesto = match.group(0)
-                lead.context["presupuesto"] = presupuesto
+                lead.context = {**lead.context, "presupuesto": presupuesto}
                 print(f"  ✓ Presupuesto detectado: {presupuesto}")
                 break
 
