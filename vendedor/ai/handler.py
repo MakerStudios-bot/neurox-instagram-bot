@@ -79,8 +79,79 @@ def get_ai_response(lead: Lead, user_message: str, db) -> str:
     # 8. Limpiar la respuesta (remover TODO [SIGNAL: ...] incluyendo los corchetes)
     ai_response_clean = re.sub(r'\[SIGNAL:\s*\w+\s*\]', '', ai_response_full).strip()
 
-    # 9. Devolver la respuesta limpia (sin el tag [SIGNAL: ...])
+    # 9. Extraer y actualizar contexto del lead (nombre, servicio, presupuesto)
+    _extract_and_update_context(lead, user_message, ai_response_clean, db)
+
+    # 10. Devolver la respuesta limpia (sin el tag [SIGNAL: ...])
     return {
         "response": ai_response_clean,
         "signal": signal
     }
+
+
+def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str, db) -> None:
+    """
+    Extrae información del contexto del lead (nombre, servicio, presupuesto)
+    de la conversación y la actualiza en lead.context.
+
+    Args:
+        lead: objeto Lead
+        user_message: mensaje del usuario
+        ai_response: respuesta de la IA
+        db: sesión SQLAlchemy
+    """
+    if not lead.context:
+        lead.context = {}
+
+    full_text = (user_message + " " + ai_response).lower()
+
+    # Palabras clave para detectar servicios
+    servicios_keywords = {
+        "página web": ["página web", "web", "landing page", "sitio web"],
+        "bot": ["bot instagram", "bot", "automatización instagram", "chatbot"],
+        "video": ["video", "videos", "edición de video", "edición"],
+        "vendedor ia": ["vendedor ia", "vendedor", "sistema de ventas", "automatización ventas"]
+    }
+
+    # Detectar servicio si aún no está en contexto
+    if "servicio_interesado" not in lead.context or not lead.context.get("servicio_interesado"):
+        for servicio, palabras in servicios_keywords.items():
+            if any(palabra in full_text for palabra in palabras):
+                lead.context["servicio_interesado"] = servicio
+                print(f"  ✓ Servicio detectado: {servicio}")
+                break
+
+    # Detectar nombre (buscar patrones comunes: "me llamo X", "soy X", "nombre X", "Juan", etc.)
+    # Por ahora usamos una heurística simple
+    if "nombre" not in lead.context or not lead.context.get("nombre"):
+        # Buscar "me llamo...", "mi nombre es...", "soy..."
+        patterns = [
+            r"me\s+llamo\s+([a-záéíóúñ]+)",
+            r"mi\s+nombre\s+es\s+([a-záéíóúñ]+)",
+            r"soy\s+([a-záéíóúñ]+)",
+            r"nombre:\s*([a-záéíóúñ]+)",
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, full_text)
+            if match:
+                nombre = match.group(1).capitalize()
+                lead.context["nombre"] = nombre
+                print(f"  ✓ Nombre detectado: {nombre}")
+                break
+
+    # Detectar presupuesto (buscar números con $ o patrones como "tengo X", "presupuesto")
+    if "presupuesto" not in lead.context or not lead.context.get("presupuesto"):
+        # Buscar patrones como "$150.000", "150 mil", etc.
+        patterns = [
+            r"\$?\d+[.,]\d{3}(?:\.\d{3})?",  # $150.000 o 150,000
+            r"(\d+)\s*(mil|millones)",  # 150 mil
+        ]
+        for pattern in patterns:
+            match = re.search(pattern, full_text)
+            if match:
+                presupuesto = match.group(0)
+                lead.context["presupuesto"] = presupuesto
+                print(f"  ✓ Presupuesto detectado: {presupuesto}")
+                break
+
+    db.flush()

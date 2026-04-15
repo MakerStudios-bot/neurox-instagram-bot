@@ -1,9 +1,7 @@
-"""Generación de cotizaciones automáticas usando Claude"""
+"""Generación de cotizaciones automáticas con servicios Neurox"""
 
 from database.models import Cotizacion
-from ai.claude_client import call_claude
 from config import APP_URL
-import json
 
 
 def generar_cotizacion(lead, db):
@@ -25,112 +23,115 @@ def generar_cotizacion(lead, db):
 
     # Precios de servicios reales
     servicios_disponibles = {
-        "página web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
-        "landing page": {"Landing Page": "$150.000"},
-        "web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
-        "bot": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
-        "bot instagram": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
-        "bot ia": {"Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
-        "bot sin ia": {"Bot Automático Instagram (Sin IA)": "$110.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
-        "video": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
-        "videos": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
-        "edición": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
-        "vendedor ia": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"},
-        "sistema ventas": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"},
-        "automatización": {"Vendedor IA Starter (+ $55.000/mes)": "$230.000", "Vendedor IA Pro (+ $105.000/mes)": "$380.000", "Vendedor IA Elite (+ $160.000/mes)": "$580.000"}
+        "página web": [
+            {"descripcion": "Landing Page", "precio": "$150.000"},
+            {"descripcion": "Web Completa", "precio": "$350.000"}
+        ],
+        "landing page": [
+            {"descripcion": "Landing Page", "precio": "$150.000"}
+        ],
+        "web": [
+            {"descripcion": "Landing Page", "precio": "$150.000"},
+            {"descripcion": "Web Completa", "precio": "$350.000"}
+        ],
+        "bot": [
+            {"descripcion": "Bot Automático Instagram (Sin IA)", "precio": "$110.000"},
+            {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+        "bot instagram": [
+            {"descripcion": "Bot Automático Instagram (Sin IA)", "precio": "$110.000"},
+            {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+        "bot ia": [
+            {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+        "bot sin ia": [
+            {"descripcion": "Bot Automático Instagram (Sin IA)", "precio": "$110.000"},
+            {"descripcion": "Membresía Bot Starter", "precio": "$24.000/mes"},
+            {"descripcion": "Membresía Bot Pro", "precio": "$55.000/mes"},
+            {"descripcion": "Membresía Bot Full", "precio": "$105.000/mes"}
+        ],
+        "video": [
+            {"descripcion": "Por video", "precio": "$35.000"},
+            {"descripcion": "4 videos", "precio": "$110.000"},
+            {"descripcion": "8 videos", "precio": "$190.000"}
+        ],
+        "videos": [
+            {"descripcion": "Por video", "precio": "$35.000"},
+            {"descripcion": "4 videos", "precio": "$110.000"},
+            {"descripcion": "8 videos", "precio": "$190.000"}
+        ],
+        "edición": [
+            {"descripcion": "Por video", "precio": "$35.000"},
+            {"descripcion": "4 videos", "precio": "$110.000"},
+            {"descripcion": "8 videos", "precio": "$190.000"}
+        ],
+        "vendedor ia": [
+            {"descripcion": "Vendedor IA Starter", "precio": "$230.000 + $55.000/mes"},
+            {"descripcion": "Vendedor IA Pro", "precio": "$380.000 + $105.000/mes"},
+            {"descripcion": "Vendedor IA Elite", "precio": "$580.000 + $160.000/mes"}
+        ],
+        "sistema ventas": [
+            {"descripcion": "Vendedor IA Starter", "precio": "$230.000 + $55.000/mes"},
+            {"descripcion": "Vendedor IA Pro", "precio": "$380.000 + $105.000/mes"},
+            {"descripcion": "Vendedor IA Elite", "precio": "$580.000 + $160.000/mes"}
+        ],
+        "automatización": [
+            {"descripcion": "Vendedor IA Starter", "precio": "$230.000 + $55.000/mes"},
+            {"descripcion": "Vendedor IA Pro", "precio": "$380.000 + $105.000/mes"},
+            {"descripcion": "Vendedor IA Elite", "precio": "$580.000 + $160.000/mes"}
+        ]
     }
 
-    # Buscar servicios relevantes
+    # Buscar servicios relevantes por palabra clave
     items_default = []
+    servicio_lower = servicio.lower()
     for palabra_clave, opciones in servicios_disponibles.items():
-        if palabra_clave in servicio.lower():
-            for nombre_servicio, precio in opciones.items():
-                items_default.append({"descripcion": nombre_servicio, "precio": precio})
+        if palabra_clave in servicio_lower:
+            items_default = opciones.copy()
             break
 
-    # Si no encontró nada específico, usar un mensaje genérico
+    # Si no encontró nada específico, ofrecer una selección de todos los servicios
     if not items_default:
+        print(f"⚠️  No se encontró coincidencia para '{servicio}', mostrando opciones generales")
         items_default = [
-            {"descripcion": "Consultoría inicial de servicios", "precio": "Gratis"}
+            {"descripcion": "Páginas Web - Landing Page", "precio": "$150.000"},
+            {"descripcion": "Bot Automático Instagram (Con IA)", "precio": "$180.000"},
+            {"descripcion": "Edición de Videos", "precio": "$35.000 por video"}
         ]
 
-    # Prompt para que Claude valide y genere JSON
-    prompt_cotizacion = f"""
-Genera una cotización profesional en JSON para un cliente.
+    # Calcular total (solo para items sin "/mes")
+    def calcular_total(items):
+        total_num = 0
+        for item in items:
+            precio = item.get("precio", "0")
+            # Extraer número del precio (solo si no es /mes)
+            if "/mes" not in precio:
+                try:
+                    # Remover $ y puntos de formato
+                    num = precio.replace("$", "").replace(".", "").split("+")[0].strip()
+                    total_num += int(num)
+                except:
+                    pass
 
-Cliente: {nombre_cliente}
-Servicio solicitado: {servicio}
-Presupuesto mencionado: {presupuesto}
+        if total_num > 0:
+            return f"${total_num:,}".replace(",", ".")
+        return "A consultar"
 
-SERVICIOS DISPONIBLES (usa EXACTAMENTE los nombres y precios):
-- Landing Page: $150.000
-- Web Completa: $350.000
-- Bot Automático Instagram (Sin IA): $110.000 inicial
-- Bot Automático Instagram (Con IA): $180.000 inicial
-- Membresía Bot Starter: $24.000/mes (500 conversaciones)
-- Membresía Bot Pro: $55.000/mes (1.500 conversaciones, IA personalizada, reportes)
-- Membresía Bot Full: $105.000/mes (4.000+ conversaciones, soporte 24/7)
-- Por video (edición): $35.000
-- 4 videos (paquete): $110.000
-- 8 videos (paquete): $190.000
-- Vendedor IA Starter: $230.000 inicial + $55.000/mes (hasta 500 conversaciones/mes)
-- Vendedor IA Pro: $380.000 inicial + $105.000/mes (hasta 1500 conversaciones/mes)
-- Vendedor IA Elite: $580.000 inicial + $160.000/mes (ilimitado)
-
-Devuelve un JSON válido (SIN explicaciones, SOLO el JSON):
-{{
-    "items": [
-        {{"descripcion": "Nombre del servicio exacto", "precio": "Precio exacto"}},
-        {{"descripcion": "Otro servicio si es combo", "precio": "Precio"}}
-    ],
-    "total": "Total en formato $X.XXX",
-    "notas": "Nota breve: validez de 30 días, próximos pasos"
-}}
-
-REGLAS IMPORTANTES:
-- Solo usa servicios de la lista "SERVICIOS DISPONIBLES"
-- NUNCA inventes servicios
-- Los precios deben ser exactos, sin cambios
-- Si el cliente pidió "desarrollo web" sugiere Web Completa
-- Si pidió "bot" sugiere Bot Automático Instagram
-- Si pidió "videos" sugiere edición de videos
-- El total debe ser la suma de todos los items
-"""
-
-    try:
-        response = call_claude(
-            system_prompt="Eres un asesor de ventas experto. Generas cotizaciones profesionales en JSON válido.",
-            messages=[{"role": "user", "content": prompt_cotizacion}]
-        )
-
-        # Parsear JSON de la respuesta
-        # Claude a veces agrega caracteres antes del JSON, así que extraemos solo el JSON
-        import re
-        json_match = re.search(r'\{.*\}', response, re.DOTALL)
-        if not json_match:
-            raise ValueError("No JSON found in response")
-
-        json_str = json_match.group(0)
-        coti_data = json.loads(json_str)
-
-    except Exception as e:
-        print(f"Error generando cotización con Claude: {e}")
-        # Fallback: usar cotización por defecto según servicio detectado
-        if items_default:
-            total = "$0"  # Calcular total real
-            coti_data = {
-                "items": items_default,
-                "total": total,
-                "notas": "Cotización basada en tu solicitud. Válida por 30 días. Responde al chat para confirmar."
-            }
-        else:
-            coti_data = {
-                "items": [
-                    {"descripcion": "Consultoría inicial de servicios Neurox", "precio": "Gratis"}
-                ],
-                "total": "$0",
-                "notas": "Agendar una llamada para personalizar la cotización según tus necesidades."
-            }
+    coti_data = {
+        "items": items_default,
+        "total": calcular_total(items_default),
+        "notas": "Cotización válida por 30 días. Responde al chat para confirmar o hacer preguntas."
+    }
 
     # Crear registro en BD
     cotizacion = Cotizacion(
@@ -147,5 +148,7 @@ REGLAS IMPORTANTES:
 
     # Retornar URL completa
     url = f"{APP_URL}/cotizacion/{cotizacion.token}"
-    print(f"✓ Cotización generada: {url}")
+    print(f"✓ Cotización generada para '{nombre_cliente}' - Servicio: {servicio}")
+    print(f"  Items: {len(coti_data.get('items', []))} | Total: {coti_data.get('total', 'A consultar')}")
+    print(f"  URL: {url}")
     return url
