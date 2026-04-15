@@ -93,8 +93,13 @@ SERVICIOS DISPONIBLES (solo menciona los que aplican):
    - Web Completa: $350.000
 
 2. BOT AUTOMÁTICO INSTAGRAM:
-   - Sin IA: $110.000
-   - Con IA: $180.000
+   - Sin IA: $110.000 (membresía luego)
+   - Con IA: $180.000 (membresía luego)
+
+   Membresías mensuales disponibles:
+   - Starter: $24.000/mes (500 conversaciones, soporte WhatsApp, 1 perfil IG)
+   - Pro: $55.000/mes (1.500 conversaciones, IA personalizada, reportes mensuales)
+   - Full: $105.000/mes (4.000+ conversaciones, mantenimiento activo, soporte 24/7)
 
 3. EDICIÓN DE VIDEOS PARA REDES:
    - Por video: $35.000

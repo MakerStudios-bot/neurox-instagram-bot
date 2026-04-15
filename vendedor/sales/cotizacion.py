@@ -28,10 +28,10 @@ def generar_cotizacion(lead, db):
         "página web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
         "landing page": {"Landing Page": "$150.000"},
         "web": {"Landing Page": "$150.000", "Web Completa": "$350.000"},
-        "bot": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000"},
-        "bot instagram": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000"},
-        "bot ia": {"Bot Automático Instagram (Con IA)": "$180.000"},
-        "bot sin ia": {"Bot Automático Instagram (Sin IA)": "$110.000"},
+        "bot": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
+        "bot instagram": {"Bot Automático Instagram (Sin IA)": "$110.000", "Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
+        "bot ia": {"Bot Automático Instagram (Con IA)": "$180.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
+        "bot sin ia": {"Bot Automático Instagram (Sin IA)": "$110.000", "Membresía Bot Starter": "$24.000/mes", "Membresía Bot Pro": "$55.000/mes", "Membresía Bot Full": "$105.000/mes"},
         "video": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "videos": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
         "edición": {"Por video": "$35.000", "4 videos": "$110.000", "8 videos": "$190.000"},
@@ -65,8 +65,11 @@ Presupuesto mencionado: {presupuesto}
 SERVICIOS DISPONIBLES (usa EXACTAMENTE los nombres y precios):
 - Landing Page: $150.000
 - Web Completa: $350.000
-- Bot Automático Instagram (Sin IA): $110.000
-- Bot Automático Instagram (Con IA): $180.000
+- Bot Automático Instagram (Sin IA): $110.000 inicial
+- Bot Automático Instagram (Con IA): $180.000 inicial
+- Membresía Bot Starter: $24.000/mes (500 conversaciones)
+- Membresía Bot Pro: $55.000/mes (1.500 conversaciones, IA personalizada, reportes)
+- Membresía Bot Full: $105.000/mes (4.000+ conversaciones, soporte 24/7)
 - Por video (edición): $35.000
 - 4 videos (paquete): $110.000
 - 8 videos (paquete): $190.000
