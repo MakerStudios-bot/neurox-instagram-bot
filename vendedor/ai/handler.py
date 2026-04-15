@@ -1,6 +1,7 @@
 """Orquestador principal de IA — maneja el flujo de conversación"""
 
 import re
+from sqlalchemy.orm import flag_modified
 from database.models import Lead, Message
 from database import SessionLocal
 from .claude_client import call_claude
@@ -168,4 +169,6 @@ def _extract_and_update_context(lead: Lead, user_message: str, ai_response: str,
                 print(f"  ✓ Presupuesto detectado: {presupuesto}")
                 break
 
+    # Marcar que el contexto cambió para que SQLAlchemy lo guarde
+    flag_modified(lead, "context")
     db.flush()
