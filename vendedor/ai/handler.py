@@ -1,7 +1,7 @@
 """Orquestador principal de IA — maneja el flujo de conversación"""
 
 import re
-from sqlalchemy.orm import flag_modified
+from sqlalchemy.orm.attributes import flag_modified
 from database.models import Lead, Message
 from database import SessionLocal
 from .claude_client import call_claude
