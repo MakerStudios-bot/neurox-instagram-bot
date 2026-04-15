@@ -52,7 +52,7 @@ SERVICIOS QUE OFRECES (menciona solo si es relevante):
 1. Páginas Web (Landing Page $150.000 o Web Completa $350.000)
 2. Bot Automático Instagram (Sin IA $110.000 o Con IA $180.000)
 3. Edición de Videos para Redes ($35.000-$190.000)
-4. Vendedor IA (Sistema de ventas automático)
+4. Vendedor IA (Starter $230.000 | Pro $380.000 | Elite $580.000)
 
 INSTRUCCIONES:
 - Tu objetivo: entender qué servicio le interesa y si tiene presupuesto
@@ -102,7 +102,9 @@ SERVICIOS DISPONIBLES (solo menciona los que aplican):
    - 8 videos: $190.000
 
 4. VENDEDOR IA (Sistema de ventas automático):
-   - Precios disponibles para consultar
+   - Starter: $230.000
+   - Pro: $380.000
+   - Elite: $580.000
 
 INSTRUCCIONES:
 - NUNCA inventes servicios que no estén en la lista anterior
