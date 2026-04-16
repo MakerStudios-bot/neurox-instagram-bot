@@ -24,6 +24,9 @@ DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///vendedor.db")
 ADMIN_USER = os.getenv("ADMIN_USER", "admin")
 ADMIN_PASS = os.getenv("ADMIN_PASS", "changeme")
 
+# Calendly
+CAL_LINK = os.getenv("CAL_LINK", "https://calendly.com/neurox-contacto/new-meeting")
+
 # Scheduler
 FOLLOW_UP_HOURS = 24  # Esperar 24h antes de enviar follow-up
 MAX_FOLLOW_UPS = 2  # Máximo 2 mensajes de seguimiento por lead

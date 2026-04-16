@@ -10,7 +10,7 @@ from ai.handler import get_ai_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
 from sales.cotizacion import generar_cotizacion
-from config import VERIFY_TOKEN, APP_SECRET
+from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK
 from datetime import datetime
 
 webhook = Blueprint("webhook", __name__)
@@ -111,7 +111,7 @@ def webhook_handle():
                         access_token=DEFAULT_ACCESS_TOKEN or "",
                         business_name="Neurox",
                         system_prompt="Eres vendedor. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.",
-                        cal_link="https://calendly.com"
+                        cal_link=CAL_LINK
                     )
                     db.add(client)
                     db.flush()
