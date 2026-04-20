@@ -7,6 +7,7 @@ from flask import Blueprint, request, Response
 from database import SessionLocal
 from database.models import Client, Lead, Message
 from ai.handler import get_ai_response
+from ai.auto_responder import get_auto_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
 from sales.cotizacion import generar_cotizacion
@@ -147,18 +148,26 @@ def webhook_handle():
                 # 7. Actualizar last_message_at
                 lead.last_message_at = datetime.utcnow()
 
-                # 8. Obtener respuesta de IA
-                print(f"  Llamando IA...")
-                ai_result = get_ai_response(lead, message_text, db)
-                response_text = ai_result["response"]
-                signal = ai_result["signal"]
+                # 8. Obtener respuesta (IA o automática según tipo de servicio)
+                tipo_servicio = os.getenv("TIPO_SERVICIO", "")
+                signal = None
+
+                if tipo_servicio == "bot_automatico_sin_ia":
+                    print(f"  Respuesta automática (sin IA)...")
+                    response_text = get_auto_response(message_text)
+                else:
+                    print(f"  Llamando IA...")
+                    ai_result = get_ai_response(lead, message_text, db)
+                    response_text = ai_result["response"]
+                    signal = ai_result["signal"]
 
                 print(f"  Signal extraído: {signal}")
 
                 # 9. Evaluar transición de etapa
-                should_trans, new_stage = should_transition(lead, signal)
-                if should_trans:
-                    apply_transition(lead, new_stage, db)
+                if signal:
+                    should_trans, new_stage = should_transition(lead, signal)
+                    if should_trans:
+                        apply_transition(lead, new_stage, db)
 
                 # 10. Enviar DM al usuario
                 print(f"  Enviando DM...")
