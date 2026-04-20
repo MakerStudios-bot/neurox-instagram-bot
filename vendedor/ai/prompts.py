@@ -28,7 +28,7 @@ INSTRUCCIONES GENERALES:
 - Escribe como humano en un chat, sin listas con viñetas
 - NUNCA menciones que eres IA o bot
 - Al final de CADA respuesta escribe una línea oculta exactamente así:
-  [SIGNAL: CALIFICAR] o [SIGNAL: AGENDAR] o [SIGNAL: COTIZAR] o [SIGNAL: CERRAR]
+  [SIGNAL: CALIFICAR] o [SIGNAL: AGENDAR] o [SIGNAL: CERRAR]
 - Esta línea NO se ve para el usuario — el sistema la parsea después"""
 
     # Adiciones por etapa
@@ -59,7 +59,6 @@ INSTRUCCIONES:
 - NUNCA menciones servicios que no estén en la lista
 - NUNCA hables de "marketing digital", "diseño", "desarrollo web" genérico
 - Si claramente quiere agendar una llamada → [SIGNAL: AGENDAR]
-- Si pide precio directamente sin querer llamada → [SIGNAL: COTIZAR]
 - Si sugiere que NO le interesa → [SIGNAL: CERRAR]
 - Si quieres seguir calificando → [SIGNAL: CALIFICAR]"""
 
@@ -72,32 +71,8 @@ ETAPA: AGENDADO
 - {nombre or 'Este lead'} ya aceptó agendar una llamada
 - Envía el link de agendar: {client.cal_link}
 - Confirma que lo recibió y puede hacer clic
-- Si cambia de opinión y quiere precio por escrito → [SIGNAL: COTIZAR]
 - Si se va definitivamente → [SIGNAL: CERRAR]
 - Si todo va bien → [SIGNAL: AGENDAR]"""
-
-    elif stage == "COTIZADO":
-        context = lead.context or {}
-        nombre = context.get("nombre", "")
-        servicio = context.get("servicio_interesado", "").lower()
-
-        return base + f"""
-
-ETAPA: COTIZADO
-- {nombre or 'Este lead'} está evaluando la propuesta de precio
-
-SERVICIOS DISPONIBLES (solo menciona los que aplican):
-{os.getenv("PRODUCTOS_DETALLE", "1. PÁGINAS WEB:\n   - Landing Page: $150.000\n   - Web Completa: $350.000\n\n2. BOT AUTOMÁTICO INSTAGRAM:\n   - Sin IA: $110.000 (membresía luego)\n   - Con IA: $180.000 (membresía luego)\n\n   Membresías mensuales:\n   - Starter: $24.000/mes (500 conversaciones)\n   - Pro: $55.000/mes (1.500 conversaciones)\n   - Full: $105.000/mes (ilimitado)\n\n3. VENDEDOR IA (Sistema de ventas automático + membresía mensual):\n   - Starter: $230.000 + $55.000/mes\n   - Pro: $380.000 + $105.000/mes\n   - Elite: $580.000 + $160.000/mes")}
-
-INSTRUCCIONES:
-- NUNCA inventes servicios que no estén en la lista anterior
-- NUNCA menciones "marketing digital", "desarrollo web personalizado", "diseño gráfico"
-- Solo habla de los servicios que el lead pidió o que le recomendaste
-- Tu objetivo: resolver objeciones sin hacer descuentos sin justificación
-- Si dice "es muy caro" → explica el valor y ROI del servicio
-- Si insiste mucho → puedes ofrecer máximo 10% de descuento SOLO en servicios combo
-- Si rechaza definitivamente → [SIGNAL: CERRAR]
-- Si sigue interesado → [SIGNAL: COTIZAR]"""
 
     elif stage == "FOLLOW_UP":
         context = lead.context or {}
@@ -110,7 +85,7 @@ ETAPA: FOLLOW_UP (mensaje #{count})
 - Sé breve, humano y sin presión
 - Recuerda qué estaban discutiendo: {lead.messages[-1].content if lead.messages else 'desconocido'}
 - Si dice definitivamente que NO → [SIGNAL: CERRAR]
-- Si vuelve a responder interesado → vuelve a [SIGNAL: COTIZAR] o [SIGNAL: AGENDAR] según el contexto
+- Si vuelve a responder interesado → vuelve a [SIGNAL: AGENDAR] según el contexto
 - Si sigue sin responder → [SIGNAL: FOLLOW_UP]"""
 
     else:

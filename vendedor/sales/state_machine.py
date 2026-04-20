@@ -12,7 +12,7 @@ def extract_signal(ai_response: str) -> str:
         ai_response: respuesta completa de Claude
 
     Returns:
-        string "CALIFICAR", "AGENDAR", "COTIZAR", "CERRAR" o None
+        string "CALIFICAR", "AGENDAR", "CERRAR" o None
     """
     # Buscar [SIGNAL: X] en la respuesta
     match = re.search(r'\[SIGNAL:\s*(\w+)\s*\]', ai_response)
@@ -29,7 +29,7 @@ def should_transition(lead: Lead, signal: str) -> tuple[bool, str]:
 
     Args:
         lead: objeto Lead
-        signal: string "CALIFICAR", "AGENDAR", "COTIZAR", "CERRAR" o None
+        signal: string "CALIFICAR", "AGENDAR", "CERRAR" o None
 
     Returns:
         (debería_transicionar: bool, nueva_etapa: str)
@@ -42,24 +42,16 @@ def should_transition(lead: Lead, signal: str) -> tuple[bool, str]:
         "NUEVO": {
             "CALIFICAR": "CALIFICANDO",  # Siempre → CALIFICANDO en primer mensaje
             "AGENDAR": "AGENDADO",
-            "COTIZAR": "COTIZADO",
         },
         "CALIFICANDO": {
             "AGENDAR": "AGENDADO",
-            "COTIZAR": "COTIZADO",
             "CERRAR": "CERRADO",
         },
         "AGENDADO": {
-            "COTIZAR": "COTIZADO",
-            "CERRAR": "CERRADO",
-        },
-        "COTIZADO": {
-            "AGENDAR": "AGENDADO",  # Por si el lead se arrepiente y quiere llamada
             "CERRAR": "CERRADO",
         },
         "FOLLOW_UP": {
             "AGENDAR": "AGENDADO",
-            "COTIZAR": "COTIZADO",
             "CERRAR": "CERRADO",
         },
     }

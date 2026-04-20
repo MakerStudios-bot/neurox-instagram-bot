@@ -24,7 +24,7 @@ def seed_database():
             system_prompt="""Eres Neurox, una agencia de soluciones digitales.
 Ofrecemos Bot IA ($230k), Web ($180k) y Videos ($35k).
 Responde SIEMPRE en español, máximo 3 oraciones.
-Al final escribe: [SIGNAL: CALIFICAR|AGENDAR|COTIZAR|CERRAR]""",
+Al final escribe: [SIGNAL: CALIFICAR|AGENDAR|CERRAR]""",
             cal_link="https://cal.com/test"
         )
         db.add(test_client)
