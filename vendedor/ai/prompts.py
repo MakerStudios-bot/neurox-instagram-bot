@@ -51,7 +51,7 @@ Contexto actual: {context}
 - Ya sabes que se llama: {nombre or 'desconocido'}
 
 SERVICIOS QUE OFRECES (menciona solo si es relevante):
-{os.getenv("PRODUCTOS_PROMPT", "1. Páginas Web (Landing Page $150.000 o Web Completa $350.000)\n2. Bot Automático Instagram (Sin IA $110.000 o Con IA $180.000)\n3. Edición de Videos para Redes ($35.000-$190.000)\n4. Vendedor IA (Starter $230.000 | Pro $380.000 | Elite $580.000)")}
+{os.getenv("PRODUCTOS_PROMPT", "1. Páginas Web (Landing Page $150.000 o Web Completa $350.000)\n2. Bot Automático Instagram (Sin IA $110.000 o Con IA $180.000)\n3. Vendedor IA (Starter $230.000 | Pro $380.000 | Elite $580.000)")}
 
 INSTRUCCIONES:
 - Tu objetivo: entender qué servicio le interesa y si tiene presupuesto
@@ -87,7 +87,7 @@ ETAPA: COTIZADO
 - {nombre or 'Este lead'} está evaluando la propuesta de precio
 
 SERVICIOS DISPONIBLES (solo menciona los que aplican):
-{os.getenv("PRODUCTOS_DETALLE", "1. Páginas Web: Landing Page $150.000, Web Completa $350.000\n2. Bot Automático Instagram: Sin IA $110.000, Con IA $180.000\n3. Edición de Videos: $35.000-$190.000\n4. Vendedor IA: Starter $230.000, Pro $380.000, Elite $580.000")}
+{os.getenv("PRODUCTOS_DETALLE", "1. PÁGINAS WEB:\n   - Landing Page: $150.000\n   - Web Completa: $350.000\n\n2. BOT AUTOMÁTICO INSTAGRAM:\n   - Sin IA: $110.000 (membresía luego)\n   - Con IA: $180.000 (membresía luego)\n\n   Membresías mensuales:\n   - Starter: $24.000/mes (500 conversaciones)\n   - Pro: $55.000/mes (1.500 conversaciones)\n   - Full: $105.000/mes (ilimitado)\n\n3. VENDEDOR IA (Sistema de ventas automático + membresía mensual):\n   - Starter: $230.000 + $55.000/mes\n   - Pro: $380.000 + $105.000/mes\n   - Elite: $580.000 + $160.000/mes")}
 
 INSTRUCCIONES:
 - NUNCA inventes servicios que no estén en la lista anterior
