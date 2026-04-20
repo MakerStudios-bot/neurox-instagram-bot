@@ -163,6 +163,7 @@ def webhook_handle():
                 print(f"  Signal extraído: {signal}")
 
                 # 9. Evaluar transición de etapa
+                old_stage = lead.stage
                 if signal:
                     should_trans, new_stage = should_transition(lead, signal)
                     if should_trans:
@@ -177,7 +178,21 @@ def webhook_handle():
                     message_text=response_text
                 )
 
-                # 11. Guardar cambios
+                # 11. Si lead pasó a CERRADO, enviar WhatsApp para finalizar pago
+                if lead.stage == "CERRADO" and old_stage != "CERRADO":
+                    whatsapp = os.getenv("WHATSAPP_DERIVACION", "") or os.getenv("CONTACTO_DERIVACION", "")
+                    if whatsapp:
+                        print(f"  Lead cerrado, enviando WhatsApp para finalizar pago...")
+                        whatsapp_message = f"¡Excelente! Para finalizar el pago, escríbeme al WhatsApp: {whatsapp}\n\nAhí coordinamos los detalles finales 👋"
+                        send_dm(
+                            page_id=client.page_id,
+                            access_token=client.access_token,
+                            user_id=sender_id,
+                            message_text=whatsapp_message
+                        )
+                        print(f"  ✓ Mensaje de WhatsApp enviado")
+
+                # 12. Guardar cambios
                 db.commit()
                 print(f"✓ Pipeline completado para lead {lead.id}")
 
