@@ -1,5 +1,7 @@
 """System prompts por etapa del lead"""
 
+import os
+
 
 def system_prompt_for_stage(stage: str, client, lead) -> str:
     """
@@ -49,10 +51,7 @@ Contexto actual: {context}
 - Ya sabes que se llama: {nombre or 'desconocido'}
 
 SERVICIOS QUE OFRECES (menciona solo si es relevante):
-1. Páginas Web (Landing Page $150.000 o Web Completa $350.000)
-2. Bot Automático Instagram (Sin IA $110.000 o Con IA $180.000)
-3. Edición de Videos para Redes ($35.000-$190.000)
-4. Vendedor IA (Starter $230.000 | Pro $380.000 | Elite $580.000)
+{os.getenv("PRODUCTOS_PROMPT", "1. Páginas Web (Landing Page $150.000 o Web Completa $350.000)\n2. Bot Automático Instagram (Sin IA $110.000 o Con IA $180.000)\n3. Edición de Videos para Redes ($35.000-$190.000)\n4. Vendedor IA (Starter $230.000 | Pro $380.000 | Elite $580.000)")}
 
 INSTRUCCIONES:
 - Tu objetivo: entender qué servicio le interesa y si tiene presupuesto
@@ -88,28 +87,7 @@ ETAPA: COTIZADO
 - {nombre or 'Este lead'} está evaluando la propuesta de precio
 
 SERVICIOS DISPONIBLES (solo menciona los que aplican):
-1. PÁGINAS WEB:
-   - Landing Page: $150.000
-   - Web Completa: $350.000
-
-2. BOT AUTOMÁTICO INSTAGRAM:
-   - Sin IA: $110.000 (membresía luego)
-   - Con IA: $180.000 (membresía luego)
-
-   Membresías mensuales disponibles:
-   - Starter: $24.000/mes (500 conversaciones, soporte WhatsApp, 1 perfil IG)
-   - Pro: $55.000/mes (1.500 conversaciones, IA personalizada, reportes mensuales)
-   - Full: $105.000/mes (4.000+ conversaciones, mantenimiento activo, soporte 24/7)
-
-3. EDICIÓN DE VIDEOS PARA REDES:
-   - Por video: $35.000
-   - 4 videos: $110.000
-   - 8 videos: $190.000
-
-4. VENDEDOR IA (Sistema de ventas automático + membresía mensual):
-   - Starter: $230.000 + $55.000/mes (hasta 500 conversaciones)
-   - Pro: $380.000 + $105.000/mes (hasta 1500 conversaciones)
-   - Elite: $580.000 + $160.000/mes (ilimitado)
+{os.getenv("PRODUCTOS_DETALLE", "1. Páginas Web: Landing Page $150.000, Web Completa $350.000\n2. Bot Automático Instagram: Sin IA $110.000, Con IA $180.000\n3. Edición de Videos: $35.000-$190.000\n4. Vendedor IA: Starter $230.000, Pro $380.000, Elite $580.000")}
 
 INSTRUCCIONES:
 - NUNCA inventes servicios que no estén en la lista anterior

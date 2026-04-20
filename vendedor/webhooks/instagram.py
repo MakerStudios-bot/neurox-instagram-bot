@@ -12,6 +12,7 @@ from sales.state_machine import extract_signal, should_transition, apply_transit
 from sales.cotizacion import generar_cotizacion
 from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK
 from datetime import datetime
+import os
 
 webhook = Blueprint("webhook", __name__)
 
@@ -104,14 +105,15 @@ def webhook_handle():
 
                 if not client:
                     print(f"⚠️  Cliente no encontrado, creando automáticamente...")
-                    # Crear cliente automáticamente
                     from config import ACCESS_TOKEN as DEFAULT_ACCESS_TOKEN
+                    biz_name = os.getenv("BUSINESS_NAME", "Neurox")
+                    biz_prompt = os.getenv("SYSTEM_PROMPT", f"Eres vendedor de {biz_name}. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.")
                     client = Client(
                         page_id=page_id,
                         access_token=DEFAULT_ACCESS_TOKEN or "",
-                        business_name="Neurox",
-                        system_prompt="Eres vendedor. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.",
-                        cal_link=CAL_LINK
+                        business_name=biz_name,
+                        system_prompt=biz_prompt,
+                        cal_link=os.getenv("CAL_LINK", CAL_LINK)
                     )
                     db.add(client)
                     db.flush()
