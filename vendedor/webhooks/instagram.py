@@ -10,7 +10,7 @@ from ai.handler import get_ai_response
 from ai.auto_responder import get_auto_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
-from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK
+from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK, BOT_MODE
 from datetime import datetime
 import os
 
@@ -106,8 +106,31 @@ def webhook_handle():
                 if not client:
                     print(f"⚠️  Cliente no encontrado, creando automáticamente...")
                     from config import ACCESS_TOKEN as DEFAULT_ACCESS_TOKEN
-                    biz_name = os.getenv("BUSINESS_NAME", "Neurox")
-                    biz_prompt = os.getenv("SYSTEM_PROMPT", f"Eres vendedor de {biz_name}. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.")
+
+                    # Modo Bodylab para demostración
+                    if BOT_MODE == "bodylab_demo":
+                        biz_name = "Bodylab Cosmetica"
+                        biz_prompt = """Eres un asistente amable y profesional de Bodylab Cosmetica, un centro de estética integral especializado en masajes, depilación y manicure.
+
+Tu objetivo es:
+1. Recibir clientes con calidez y profesionalismo
+2. Entender qué servicio les interesa
+3. Proporcionar información sobre precios y disponibilidad
+4. Agendar citas en los horarios disponibles
+
+SERVICIOS:
+💆 MASAJES - Relajante ($25k), Descontracturante ($30k), Facial ($20k)
+🪶 DEPILACIÓN - Brasileña ($35k), Piernas ($40k)
+💅 MANICURE - Manicure ($15k), Pedicure ($18k)
+
+HORARIOS: Lunes-Viernes 09:00-18:00 | Sábado 09:00-16:00 | Domingo Cerrado
+
+Responde SIEMPRE en español, máximo 3 oraciones, sin listas. NUNCA menciones que eres IA. Sé amable y profesional."""
+                    else:
+                        # Modo Neurox normal
+                        biz_name = os.getenv("BUSINESS_NAME", "Neurox")
+                        biz_prompt = os.getenv("SYSTEM_PROMPT", f"Eres vendedor de {biz_name}. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.")
+
                     client = Client(
                         page_id=page_id,
                         access_token=DEFAULT_ACCESS_TOKEN or "",

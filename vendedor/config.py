@@ -35,3 +35,6 @@ FOLLOW_UP_JOB_INTERVAL = 1  # Cada hora
 # Server
 PORT = int(os.getenv("PORT", 5000))
 DEBUG = os.getenv("DEBUG", "False") == "True"
+
+# Bot Mode - controla qué negocio representa
+BOT_MODE = os.getenv("BOT_MODE", "neurox")  # "neurox" o "bodylab_demo"
