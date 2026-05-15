@@ -10,7 +10,7 @@ from ai.handler import get_ai_response
 from ai.auto_responder import get_auto_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
-from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK, BOT_MODE
+from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK, BOT_MODE, ASSISTANT_NAME
 from datetime import datetime
 import os
 
@@ -110,7 +110,7 @@ def webhook_handle():
                     # Modo Bodylab para demostración
                     if BOT_MODE == "bodylab_demo":
                         biz_name = "Bodylab Cosmetica"
-                        biz_prompt = """Eres un asistente amable y profesional de Bodylab Cosmetica, un centro de estética integral especializado en masajes, depilación y manicure.
+                        biz_prompt = f"""Eres {ASSISTANT_NAME}, un asistente amable y profesional de Bodylab Cosmetica, un centro de estética integral especializado en masajes, depilación y manicure.
 
 Tu objetivo es:
 1. Recibir clientes con calidez y profesionalismo
