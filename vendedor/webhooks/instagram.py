@@ -204,6 +204,7 @@ HORARIOS: Lunes-Viernes 12:00-23:00 | Sábados 12:00-00:00 | Domingos 12:00-22:0
 INSTRUCCIONES: Responde en español, máximo 3 oraciones. Sé amable, formal y profesional. Nunca menciones que eres IA. Sugiere platos según lo que el cliente busca."""
                     client.system_prompt = napoleon_prompt
                     client.business_name = "Restaurante Napoleon"
+                    db.flush()  # Guardar cambios del cliente en la BD
 
                 # 5. Buscar o crear el lead
                 lead = db.query(Lead).filter(
