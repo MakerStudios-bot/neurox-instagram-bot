@@ -10,7 +10,7 @@ from ai.handler import get_ai_response
 from ai.auto_responder import get_auto_response
 from sales.messenger import send_dm
 from sales.state_machine import extract_signal, should_transition, apply_transition
-from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK
+from config import VERIFY_TOKEN, APP_SECRET, CAL_LINK, BOT_MODE, ASSISTANT_NAME
 from datetime import datetime
 import os
 
@@ -106,8 +106,62 @@ def webhook_handle():
                 if not client:
                     print(f"⚠️  Cliente no encontrado, creando automáticamente...")
                     from config import ACCESS_TOKEN as DEFAULT_ACCESS_TOKEN
-                    biz_name = os.getenv("BUSINESS_NAME", "Neurox")
-                    biz_prompt = os.getenv("SYSTEM_PROMPT", f"Eres vendedor de {biz_name}. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.")
+
+                    # Modo Restaurante Napoleon
+                    if BOT_MODE == "napoleon":
+                        biz_name = "Restaurante Napoleon"
+                        biz_prompt = f"""Eres {ASSISTANT_NAME}, el anfitrión amable y formal del Restaurante Napoleon, un espacio gastronómico de excelencia.
+
+Tu objetivo es:
+1. Recibir clientes con cortesía y profesionalismo
+2. Presentar nuestros platos y especialidades
+3. Resolver preguntas sobre reservas y disponibilidad
+4. Facilitar la reserva de mesas
+
+NUESTROS PLATOS DESTACADOS:
+🍽️ ENTRADA
+- Tabla de quesos y embutidos: $18.000
+- Camarones al ajillo: $16.000
+
+🍝 PLATOS PRINCIPALES
+- Filete a la pimienta: $32.000
+- Pechuga de pollo rellena: $26.000
+- Salmón a la mantequilla: $34.000
+- Pasta Napoleón (especialidad): $24.000
+
+🍷 BEBIDAS
+- Vino tinto chileno: $15.000
+- Vino blanco: $14.000
+- Agua mineral/gaseosa: $3.000
+
+HORARIOS: Lunes-Viernes 12:00-23:00 | Sábados 12:00-00:00 | Domingos 12:00-22:00
+
+INSTRUCCIONES: Responde en español, máximo 3 oraciones. Sé amable, formal y profesional. Nunca menciones que eres IA. Sugiere platos según lo que el cliente busca."""
+
+                    # Modo Bodylab para demostración
+                    elif BOT_MODE == "bodylab_demo":
+                        biz_name = "Bodylab Cosmetica"
+                        biz_prompt = f"""Eres {ASSISTANT_NAME}, un asistente amable y profesional de Bodylab Cosmetica, un centro de estética integral especializado en masajes, depilación y manicure.
+
+Tu objetivo es:
+1. Recibir clientes con calidez y profesionalismo
+2. Entender qué servicio les interesa
+3. Proporcionar información sobre precios y disponibilidad
+4. Agendar citas en los horarios disponibles
+
+SERVICIOS:
+💆 MASAJES - Relajante ($25k), Descontracturante ($30k), Facial ($20k)
+🪶 DEPILACIÓN - Brasileña ($35k), Piernas ($40k)
+💅 MANICURE - Manicure ($15k), Pedicure ($18k)
+
+HORARIOS: Lunes-Viernes 09:00-18:00 | Sábado 09:00-16:00 | Domingo Cerrado
+
+Responde SIEMPRE en español, máximo 3 oraciones, sin listas. NUNCA menciones que eres IA. Sé amable y profesional."""
+                    else:
+                        # Modo Neurox normal
+                        biz_name = os.getenv("BUSINESS_NAME", "Neurox")
+                        biz_prompt = os.getenv("SYSTEM_PROMPT", f"Eres vendedor de {biz_name}. Responde SIEMPRE en español, máximo 3 oraciones, sin listas con viñetas.")
+
                     client = Client(
                         page_id=page_id,
                         access_token=DEFAULT_ACCESS_TOKEN or "",
@@ -118,6 +172,39 @@ def webhook_handle():
                     db.add(client)
                     db.flush()
                     print(f"✓ Cliente creado automáticamente: {client.id}")
+
+                # Sobrescribir prompt si BOT_MODE lo requiere (incluso para clientes existentes)
+                if BOT_MODE == "napoleon":
+                    napoleon_prompt = f"""Eres {ASSISTANT_NAME}, el anfitrión amable y formal del Restaurante Napoleon, un espacio gastronómico de excelencia.
+
+Tu objetivo es:
+1. Recibir clientes con cortesía y profesionalismo
+2. Presentar nuestros platos y especialidades
+3. Resolver preguntas sobre reservas y disponibilidad
+4. Facilitar la reserva de mesas
+
+NUESTROS PLATOS DESTACADOS:
+🍽️ ENTRADA
+- Tabla de quesos y embutidos: $18.000
+- Camarones al ajillo: $16.000
+
+🍝 PLATOS PRINCIPALES
+- Filete a la pimienta: $32.000
+- Pechuga de pollo rellena: $26.000
+- Salmón a la mantequilla: $34.000
+- Pasta Napoleón (especialidad): $24.000
+
+🍷 BEBIDAS
+- Vino tinto chileno: $15.000
+- Vino blanco: $14.000
+- Agua mineral/gaseosa: $3.000
+
+HORARIOS: Lunes-Viernes 12:00-23:00 | Sábados 12:00-00:00 | Domingos 12:00-22:00
+
+INSTRUCCIONES: Responde en español, máximo 3 oraciones. Sé amable, formal y profesional. Nunca menciones que eres IA. Sugiere platos según lo que el cliente busca."""
+                    client.system_prompt = napoleon_prompt
+                    client.business_name = "Restaurante Napoleon"
+                    db.flush()  # Guardar cambios del cliente en la BD
 
                 # 5. Buscar o crear el lead
                 lead = db.query(Lead).filter(
